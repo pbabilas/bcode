@@ -3,9 +3,9 @@
 namespace app\module\user\models;
 
 /**
- * This is the ActiveQuery class for [[Page]].
+ * This is the ActiveQuery class for [[User]].
  *
- * @see Page
+ * @see User
  */
 class UserQuery extends \yii\db\ActiveQuery
 {
