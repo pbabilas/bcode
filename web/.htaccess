@@ -1,0 +1,12 @@
+Options +FollowSymLinks
+RewriteEngine on
+RewriteBase /
+
+# Add additional file extensions to the list as needed.
+#RewriteCond %{REQUEST_FILENAME} ([a-z_]*?)_picture/(.*?)\.(?:jpg|png|jpeg)$
+#RewriteCond %{REQUEST_FILENAME} !-f
+#RewriteCond %{REQUEST_FILENAME} !-d
+#RewriteRule ^([a-z_]*)_picture/(.*)/(.*)\.(jpg|png|jpeg)$ thumbnailer/create?type=$1&size=$2&pictureFilename=$3&extension=$4 [QSA]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)$ index.php/$1 [QSA,L]

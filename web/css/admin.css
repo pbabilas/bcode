@@ -1,0 +1,14 @@
+.wrap
+{
+    padding-top: 70px;
+}
+
+.navbar-brand
+{
+    padding: 5px;
+}
+
+.navbar-brand img
+{
+    width: 60%;
+}
