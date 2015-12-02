@@ -44,9 +44,11 @@ class DefaultAdminController extends AbstractAdminController
 
 			if ($user->save())
 			{
-				return $this->redirect(['/admin/page']);
+				return $this->redirect(['/admin/user']);
 			}
 
+
+			$user->password = '';
 			$this->addErrorMessagesFromModel($user);
 		}
 

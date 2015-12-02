@@ -34,7 +34,7 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return [
             [['name', 'password', 'email'], 'required'],
-            [['name', 'authKey', 'email', 'accessToken'], 'string', 'max' => 100],
+            [['name', 'authKey', 'accessToken', 'email'], 'string', 'max' => 100],
             [['password'], 'string', 'max' => 255],
             [['name'], 'unique']
         ];
@@ -131,10 +131,5 @@ class User extends ActiveRecord implements IdentityInterface
             ->where(['accessToken' => $token])
             ->one();
         return $user;
-    }
-
-    public function beforeSave($insert)
-    {
-
     }
 }
