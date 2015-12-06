@@ -44,4 +44,15 @@ class AbstractController extends Controller
 		$message = new Message("`$module.$message`", $type);
 		Yii::$app->session->setFlash($message->getType(), $message->getContent());
 	}
+
+	/**
+	 * @param array $pieces
+	 */
+	public function addBreadcrumb($pieces = [])
+	{
+		foreach ($pieces as $pice)
+		{
+			$this->view->params['breadcrumbs'][] = $pice;
+		}
+	}
 }

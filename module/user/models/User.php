@@ -2,6 +2,7 @@
 
 namespace app\module\user\models;
 
+use app\module\nice_url\interfaces\NiceUrlInterface;
 use Yii;
 use \yii\db\ActiveRecord;
 use \yii\web\IdentityInterface;
@@ -17,7 +18,7 @@ use \yii\web\IdentityInterface;
  * @property string $accessToken
  *
  */
-class User extends ActiveRecord implements IdentityInterface
+class User extends ActiveRecord implements IdentityInterface, NiceUrlInterface
 {
     /**
      * @inheritdoc
@@ -131,5 +132,31 @@ class User extends ActiveRecord implements IdentityInterface
             ->where(['accessToken' => $token])
             ->one();
         return $user;
+    }
+
+    /**
+     * @return array
+     */
+    public function getFieldsForNiceUrl()
+    {
+        return [
+            'name'
+        ];
+    }
+
+    /**
+     * @return string
+     */
+    public function getNiceUrlModuleName()
+    {
+        return 'page';
+    }
+
+    /**
+     * @return string
+     */
+    public function getNiceUrlModuleAction()
+    {
+        return 'show';
     }
 }

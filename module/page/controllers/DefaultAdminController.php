@@ -33,7 +33,7 @@ class DefaultAdminController extends AbstractAdminController
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
 		$this->view->title = '`page.pages`';
-		$this->view->params['breadcrumbs'][] = $this->view->title;
+		$this->addBreadcrumb([$this->view->title]);
 
         return $this->render('index.tpl', [
             'searchModel' => $searchModel,
@@ -58,8 +58,10 @@ class DefaultAdminController extends AbstractAdminController
 		}
 
 		$this->view->title = '`page.create_page`';
-		$this->view->params['breadcrumbs'][] = ['label' => '`page.Pages`', 'url' => ['index']];
-		$this->view->params['breadcrumbs'][] = $this->view->title;;
+		$this->addBreadcrumb([
+			['label' => '`page.Pages`', 'url' => ['index']],
+			$this->view->title
+		]);
 		return $this->render('create.tpl', [
 			'page' => $model,
 		]);
@@ -84,8 +86,10 @@ class DefaultAdminController extends AbstractAdminController
 			}
 
 			$this->view->title = '`page.update`';
-			$this->view->params['breadcrumbs'][] = ['label' => '`page.pages`', 'url' => ['index']];
-			$this->view->params['breadcrumbs'][] = '`page.update`';
+			$this->addBreadcrumb([
+				['label' => '`page.pages`', 'url' => ['index']],
+				'`page.update`'
+			]);
 
 			$this->addMessage('page', 'updated_successful', Message::INFO);
 			return $this->render('update.tpl', [
