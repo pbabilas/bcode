@@ -2,6 +2,7 @@
 
 namespace app\module\user\models;
 
+use app\common\model\AbstractModel;
 use app\module\nice_url\interfaces\NiceUrlInterface;
 use Yii;
 use \yii\db\ActiveRecord;
@@ -18,7 +19,7 @@ use \yii\web\IdentityInterface;
  * @property string $accessToken
  *
  */
-class User extends ActiveRecord implements IdentityInterface, NiceUrlInterface
+class User extends AbstractModel implements IdentityInterface
 {
     /**
      * @inheritdoc
@@ -113,15 +114,6 @@ class User extends ActiveRecord implements IdentityInterface, NiceUrlInterface
     }
 
     /**
-     * @param $password
-     * @return bool
-     */
-    public function validatePassword($password)
-    {
-        return $this->password === $password;
-    }
-
-    /**
      * @param mixed $token
      * @param null $type
      * @return array|null|ActiveRecord|IdentityInterface
@@ -132,31 +124,5 @@ class User extends ActiveRecord implements IdentityInterface, NiceUrlInterface
             ->where(['accessToken' => $token])
             ->one();
         return $user;
-    }
-
-    /**
-     * @return array
-     */
-    public function getFieldsForNiceUrl()
-    {
-        return [
-            'name'
-        ];
-    }
-
-    /**
-     * @return string
-     */
-    public function getNiceUrlModuleName()
-    {
-        return 'page';
-    }
-
-    /**
-     * @return string
-     */
-    public function getNiceUrlModuleAction()
-    {
-        return 'show';
     }
 }

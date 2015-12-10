@@ -12,7 +12,7 @@ class DefaultAdminController extends AbstractAdminController
 	 */
 	public function actionIndex()
 	{
-       die('default admin dashboard');
+       return $this->render('index.tpl');
 	}
 
 }

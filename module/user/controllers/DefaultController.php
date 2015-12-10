@@ -5,7 +5,9 @@ namespace app\module\user\controllers;
 use app\common\AbstractController;
 use app\common\Message;
 use app\module\user\models\User;
+use app\module\user\security\Auth;
 use Yii;
+use yii\base\ErrorException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -37,10 +39,10 @@ class DefaultController extends AbstractController
 
     public function actionLogout()
     {
-		if (\Yii::$app->user->logout())
+		$auth = new Auth();
+		if ($auth->logout())
 		{
 			$this->addMessage('user', 'logout_succesfull', Message::INFO);
-			return $this->redirect('/user/login');
 		}
 
 		return $this->redirect('/user/login');
@@ -48,52 +50,30 @@ class DefaultController extends AbstractController
 
     public function actionLogin()
     {
-        $user = new User();
+        $userCandidate = new User();
 
-        if (\Yii::$app->request->isPost)
-        {
-			$userCandidate =  \Yii::$app->request->post('User');
+		if (\Yii::$app->request->isPost)
+		{
+			$userCandidate->load(\Yii::$app->request->post('User'));
 
-			/** @var User $user */
-			$user = User::find()
-				->where(['name' => $userCandidate['name']])
-				->one();
+			$auth = new Auth();
+			$result = $auth->login($userCandidate);
 
-			if (
-				is_null($user) == false &&
-				$user->password == \Yii::$app->getSecurity()->validatePassword($userCandidate['password'], $user->password))
+			if ($result)
 			{
-				\Yii::$app->user->login($user, 3600);
 				$this->addMessage('user', 'login_succesfull', Message::INFO);
 				return $this->redirect(\Yii::$app->user->getReturnUrl());
 			}
 
+			$userCandidate->password = '';
 			$this->addMessage('user', 'wrong_data_given', Message::ALERT);
-			$user->password = '';
-        }
+		}
 
 		return $this->render('login.tpl', [
-			'user' => $user,
+			'user' => $userCandidate,
 		]);
 
     }
-
-	public function actionCreate()
-	{
-		$user = new User();
-
-		$user->name = 'pbabilas';
-		$user->email = 'babilas.pawel@gmail.com';
-		$user->password = 'pawel123';
-
-		$user->setAccessToken();
-		$user->setAuthKey();
-		$user->password = Yii::$app->getSecurity()->generatePasswordHash($user->password);
-		var_dump($user);
-		die('Dodaj ręcznie');
-
-	}
-
 
 	/**
 	 * Finds the User model based on its primary key value.
@@ -104,7 +84,7 @@ class DefaultController extends AbstractController
 	 */
 	protected function findModel($id)
 	{
-		if (($model = User::find($id)) !== null) {
+		if (($model = User::findOne($id)) !== null) {
 			return $model;
 		} else {
 			throw new NotFoundHttpException('The requested page does not exist.');

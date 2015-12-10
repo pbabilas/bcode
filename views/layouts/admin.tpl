@@ -20,7 +20,7 @@
 <div class="wrap">
     {$this->beginBody()}
 
-    {NavBar::begin([ 'brandLabel' => '<img src="/images/logo_rwd.png"/>',
+    {NavBar::begin([ 'brandLabel' => '<strong>{<span style="color: red">b</span>-<span style="color: black">code</span>}</strong>',
     'brandUrl' => '/admin',
     'options' => [
     'class' => 'navbar navbar-default navbar-fixed-top'
@@ -47,7 +47,7 @@
         {/if}
         {if Yii::$app->session->hasFlash('info')}
 
-            <div class="alert alert-danger">
+            <div class="alert alert-info">
                 {Html::encode(Yii::$app->session->getFlash('info'))}
             </div>
 

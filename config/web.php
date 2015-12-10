@@ -18,6 +18,10 @@ $config = [
 			'class' => 'app\module\dashboard\Module',
 			'defaultRoute' => 'default/index',
 		],
+		'calendar' => [
+				'class' => 'app\module\calendar\Module',
+				'defaultRoute' => 'default/index',
+		],
 		'user' => [
 			'class' => 'app\module\user\Module',
 			'defaultRoute' => 'default/login',
@@ -93,7 +97,7 @@ $config = [
 				'admin/<module:\w+>/<action:\w+>' => '<module>/default-admin/<action>',
 				'admin/<module:\w+>' => '<module>/default-admin/',
 				'<module:\w+>/<action:\w+>' => '<module>/default/<action>',
-				'<module:\w+>' => '<module>/admin/',
+//				'<module:\w+>' => '<module>/admin/',
 //				'<module:\w+>/<controller:\w+>-admin/<route:\w+>' => 'site/error',
 //				'<module:\w+>/<controller:\w+>-admin/' => 'site/error',
 //				'<module:\w+>/<controller:\w+>-admin' => 'site/error',

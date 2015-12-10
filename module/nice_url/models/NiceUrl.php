@@ -9,17 +9,16 @@ use Yii;
 use yii\db\ActiveRecord;
 
 /**
- * This is the model class for table "nice_url".
- *
  * @property integer $id
  * @property string $object_class
  * @property integer $object_id
  * @property string $slug
  * @property string $url
  * @property integer $language_id
+ * @property bool $redirect
  *
  * @property Language $language
- */
+**/
 class NiceUrl extends \yii\db\ActiveRecord
 {
     /**
@@ -39,6 +38,7 @@ class NiceUrl extends \yii\db\ActiveRecord
             [['object_id', 'language_id'], 'required'],
             [['object_id', 'language_id'], 'integer'],
             [['object_type', 'slug', 'url'], 'string', 'max' => 255],
+			[['redirect'], 'boolean'],
             [['url'], 'unique']
         ];
     }
@@ -98,4 +98,21 @@ class NiceUrl extends \yii\db\ActiveRecord
 
 		return $object;
     }
+
+	/**
+	 * @param NiceUrlInterface $object
+	 *
+	 * @return NiceUrl
+	 */
+	public static function createOneForObject(NiceUrlInterface $object)
+	{
+		$className = get_class($object);
+
+		$niceUrl = new NiceUrl();
+		$niceUrl->object_class = $className;
+		$niceUrl->object_id = $object->id;
+		$niceUrl->redirect = false;
+
+		return $niceUrl;
+	}
 }

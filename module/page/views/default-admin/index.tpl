@@ -2,7 +2,6 @@
 {use class="yii\grid\GridView"}
 
 
-
 <div class="page-index">
 
     <h1>{Html::encode($this->title)}</h1>

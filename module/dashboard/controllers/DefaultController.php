@@ -14,7 +14,7 @@ class DefaultController extends Controller
 {
 	public function actionIndex()
 	{
-		die('tescior');
+		die('ss');
 	}
 
 }
