@@ -38,6 +38,7 @@ class NiceUrlFactory
 	 */
 	public function generate(NiceUrlInterface $object)
 	{
+
 		$collection = new Collection();
 		/** @var Language $lang */
 		foreach($this->languages as $lang)

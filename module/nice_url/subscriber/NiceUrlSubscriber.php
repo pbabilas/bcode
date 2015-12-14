@@ -7,6 +7,10 @@
 namespace app\module\nice_url\subscriber;
 
 use app\common\interfaces\SubscriberInterface;
+use app\module\language\models\Language;
+use app\module\nice_url\Finder;
+use app\module\nice_url\models\NiceUrl;
+use app\module\nice_url\processors\RequestProcessor;
 use yii\web\Application;
 
 class NiceUrlSubscriber implements SubscriberInterface
@@ -27,18 +31,18 @@ class NiceUrlSubscriber implements SubscriberInterface
 	 */
 	public static function process()
 	{
-		$niceUrlManager = new NiceUrlManager();
-
 		$request = \Yii::$app->getRequest();
-		if ($niceUrl = $niceUrlManager->findForRequest($request))
-		{
 
-			list($route, $params) = $niceUrlManager->processRequest($request);
+		/** @var Language $language */
+		$language = Language::findOne(['symbol' => \Yii::$app->language]);
 
-			$routes = array_merge([$route], $params);
+		$niceUrlProcessor = new RequestProcessor($language, new Finder());
 
-			\Yii::$app->catchAll = $routes;
-		}
+		list($route, $params) = $niceUrlProcessor->processRequest($request);
+
+		$routes = array_merge([$route], $params);
+
+		\Yii::$app->catchAll = $routes;
 	}
 
 

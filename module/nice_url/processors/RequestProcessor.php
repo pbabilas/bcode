@@ -10,12 +10,24 @@ namespace app\module\nice_url\processors;
 
 
 use app\module\language\models\Language;
+use app\module\nice_url\Finder;
 use app\module\nice_url\models\NiceUrl;
 use app\module\nice_url\models\NiceUrlAdvanced;
 use yii\web\Request;
 
-class NiceUrlProcessor
+class RequestProcessor
 {
+
+	/** @var Language  */
+	private $language;
+	/** @var Finder  */
+	private $finder;
+
+	public function __construct(Language $language, Finder $finder)
+	{
+		$this->language = $language;
+		$this->finder = $finder;
+	}
 
 	/**
 	 * function set route depends from niceurl
@@ -24,14 +36,13 @@ class NiceUrlProcessor
 	 */
 	public function processRequest(Request $request)
 	{
-		$language = Language::findOne(['name' => \Yii::$app->language]);
-
 		list($route, $params) = \Yii::$app->getUrlManager()->parseRequest($request);
 
-		/** @var NiceURL $niceUrl */
-		$niceUrl = NiceURL::findOne(['url' => $route, 'language_id' => $language->id]);
+		$params = $request->getQueryParams();
 
-		if ($niceUrl === false)
+		$niceUrl = $this->finder->findNiceUrlForRequest($this->language, $route);
+
+		if (is_null($niceUrl))
 		{
 			return [
 				$route,

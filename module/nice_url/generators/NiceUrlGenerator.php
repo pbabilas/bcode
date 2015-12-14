@@ -11,7 +11,7 @@ use app\module\nice_url\interfaces\NiceUrlInterface;
 use app\module\nice_url\models\NiceUrl;
 use app\module\nice_url\remover\NiceUrlRemover;
 use app\module\nice_url\slug\DatabaseCounter;
-use yii\db\Connection;
+use yii\log\Logger;
 
 class NiceUrlGenerator
 {
@@ -23,8 +23,7 @@ class NiceUrlGenerator
 	 */
 	public function runForOne(NiceUrlInterface $object)
 	{
-		$connection = new Connection();
-		$transaction = $connection->beginTransaction();
+		$transaction = \Yii::$app->getDb()->beginTransaction();
 		try
 		{
 			$factory = new NiceUrlFactory(new DatabaseCounter());
@@ -42,6 +41,7 @@ class NiceUrlGenerator
 		catch (\Exception $e)
 		{
 			$transaction->rollBack();
+			\Yii::getLogger()->log($e->getMessage(), Logger::LEVEL_ERROR, 'niceUrl');
 		}
 	}
 }

@@ -24,8 +24,13 @@ class NiceUrlRemover
 			'redirect' => false
 		]);
 
-		$oldNiceUrl->redirect = true;
-		$oldNiceUrl->save();
+		if (is_null($oldNiceUrl) == false)
+		{
+			$oldNiceUrl->redirect = true;
+			$oldNiceUrl->save();
+		}
+
+
 	}
 
 }

@@ -8,7 +8,10 @@ namespace app\components\dispatcher;
 
 
 use app\common\interfaces\SubscriberInterface;
+use app\module\page\models\Page;
 use yii\base\Component;
+use yii\base\Event;
+use yii\db\BaseActiveRecord;
 
 class EventDispatcher extends Component
 {
@@ -33,7 +36,14 @@ class EventDispatcher extends Component
 
 				if (isset($layer))
 				{
-					\Yii::$app->$layer->on($event, [$subscriber, $callback]);
+					if (is_array($layer))
+					{
+						Event::on($layer[0], $event, [$subscriber, $callback]);
+					}
+					else
+					{
+						\Yii::$app->$layer->on($event, [$subscriber, $callback]);
+					}
 				}
 				else
 				{

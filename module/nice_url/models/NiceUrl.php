@@ -37,7 +37,7 @@ class NiceUrl extends \yii\db\ActiveRecord
         return [
             [['object_id', 'language_id'], 'required'],
             [['object_id', 'language_id'], 'integer'],
-            [['object_type', 'slug', 'url'], 'string', 'max' => 255],
+            [['object_class', 'slug', 'url'], 'string', 'max' => 255],
 			[['redirect'], 'boolean'],
             [['url'], 'unique']
         ];
@@ -50,7 +50,7 @@ class NiceUrl extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'object_type' => 'Object Type',
+            'object_class' => 'Object Type',
             'object_id' => 'Object ID',
             'slug' => 'Slug',
             'url' => 'Url',
@@ -83,7 +83,7 @@ class NiceUrl extends \yii\db\ActiveRecord
     {
         $class = $this->object_class;
 
-        if (file_exists($class) === false)
+        if (class_exists($class) === false)
         {
             throw new ObjectDoesNotExistsException();
         }

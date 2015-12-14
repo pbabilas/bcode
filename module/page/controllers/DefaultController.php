@@ -8,6 +8,9 @@
 
 namespace app\module\page\controllers;
 
+use app\module\page\models\Page;
+use yii\base\Event;
+use yii\db\BaseActiveRecord;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 
@@ -25,13 +28,18 @@ class DefaultController extends Controller
 		];
 	}
 
-	/**
-	 * Lists all Page models.
-	 * @return mixed
-	 */
 	public function actionIndex()
 	{
-		die('default index');
+		/** @var Page $page */
+		$page = Page::findOne(['id' => 14]);
+		$page->title__pl = md5('ssss'.time());
+		$page->save();
+		die('po save');
+	}
+
+	public function test()
+	{
+		die('test raz dwa trz');
 	}
 
 

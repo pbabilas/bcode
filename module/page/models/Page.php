@@ -98,7 +98,7 @@ class Page extends AbstractMultiLangModel implements NiceUrlInterface
 	 */
 	public function getFieldForNiceUrl()
 	{
-		return 'name';
+		return 'title';
 	}
 
 	/**
