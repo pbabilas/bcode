@@ -37,8 +37,7 @@ class RequestProcessor
 	public function processRequest(Request $request)
 	{
 		list($route, $params) = \Yii::$app->getUrlManager()->parseRequest($request);
-
-		$params = $request->getQueryParams();
+		$params = array_merge($request->getQueryParams(), $params);
 
 		$niceUrl = $this->finder->findNiceUrlForRequest($this->language, $route);
 

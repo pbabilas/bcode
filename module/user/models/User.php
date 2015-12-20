@@ -60,6 +60,7 @@ class User extends AbstractModel implements IdentityInterface
 	 */
     public static function findIdentity($id)
     {
+
         $user = User::find()
             ->where(['id' => $id])
             ->one();

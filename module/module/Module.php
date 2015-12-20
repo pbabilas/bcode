@@ -1,6 +1,6 @@
 <?php
 
-namespace app\module\user;
+namespace app\module\module;
 
 use app\common\AbstractModule;
 

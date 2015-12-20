@@ -85,15 +85,15 @@ class NiceUrl extends \yii\db\ActiveRecord
 
         if (class_exists($class) === false)
         {
-            throw new ObjectDoesNotExistsException();
+            throw new ObjectDoesNotExistsException('Class not exists exception.');
         }
 
 		/** @var NiceUrlInterface $object */
 		$object = $class::findOne($this->object_id);
 
-		if (is_null($object))
+		if (is_null($object) || $object instanceof NiceUrlInterface === false)
 		{
-			throw new ObjectDoesNotExistsException;
+			throw new ObjectDoesNotExistsException('No object found or wrong object.');
 		}
 
 		return $object;

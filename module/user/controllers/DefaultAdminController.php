@@ -43,6 +43,13 @@ class DefaultAdminController extends AbstractAdminController
 
 			if ($user->save())
 			{
+				if (Yii::$app->request->post('technical_user'))
+				{
+					$auth = Yii::$app->getAuthManager();
+					$role = $auth->getRole('accessModule');
+					$auth->assign($role, $user->getId());
+				}
+
 				return $this->redirect(['/admin/user']);
 			}
 
@@ -58,6 +65,66 @@ class DefaultAdminController extends AbstractAdminController
 		]);
 
 		return $this->render('create.tpl', [
+			'user' => $user,
+		]);
+	}
+
+	public function actionUpdate($id)
+	{
+		/** @var User $user */
+		$user = User::findOne(['id' => $id]);
+
+
+		if (is_null($user))
+		{
+			return $this->redirect('admin/user');
+		}
+
+		if (Yii::$app->request->isPost)
+		{
+			$data = Yii::$app->request->post('User');
+
+			$user->name = $data['name'];
+			$user->email = $data['email'];
+
+			if ($data['password'] != '')
+			{
+				$user->setAccessToken();
+				$user->setAuthKey();
+				$user->password = Yii::$app->getSecurity()->generatePasswordHash($data['password']);
+			}
+
+			if ($user->save())
+			{
+				$auth = Yii::$app->getAuthManager();
+				if (Yii::$app->request->post('technical_user'))
+				{
+					$role = $auth->getRole('accessModule');
+					$auth->assign($role, $user->getId());
+				}
+				else
+				{
+//					$auth = Yii::$app->getAuthManager();
+//					$role = $auth->getRole('accessModule');
+//					$auth->
+				}
+
+				return $this->redirect(['/admin/user']);
+			}
+
+			$this->addErrorMessagesFromModel($user);
+		}
+
+		$user->password = '';
+
+		$this->view->title = '`user.update_user`';
+
+		$this->addBreadcrumb([
+			['label' => '`user.user`', 'url' => ['index']],
+			$this->view->title
+		]);
+
+		return $this->render('update.tpl', [
 			'user' => $user,
 		]);
 	}

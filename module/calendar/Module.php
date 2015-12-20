@@ -2,10 +2,10 @@
 
 namespace app\module\calendar;
 
-class Module extends \yii\base\Module
-{
+use app\common\AbstractModule;
 
-	public $controllerNamespace = 'app\module\calendar\controllers';
+class Module extends AbstractModule
+{
 
     public function init()
     {

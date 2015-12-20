@@ -15,7 +15,6 @@ use yii\db\BaseActiveRecord;
 
 class EventDispatcher extends Component
 {
-
 	CONST SUBSCRIBERS_PATH = '/module/*/subscriber/*Subscriber.php';
 
 	public function init()
@@ -31,13 +30,14 @@ class EventDispatcher extends Component
 			{
 				if (is_array($callback))
 				{
-					list( $callback, $layer ) = $callback;
+					list($callback, $layer) = $callback;
 				}
 
 				if (isset($layer))
 				{
 					if (is_array($layer))
 					{
+						//in future We can declare Event as key of array if nessesary
 						Event::on($layer[0], $event, [$subscriber, $callback]);
 					}
 					else
@@ -57,6 +57,7 @@ class EventDispatcher extends Component
 
 	/**
 	 * gets subscribers events to run
+	 *
 	 * @return array
 	 */
 	private function getSubscribers()
@@ -85,6 +86,7 @@ class EventDispatcher extends Component
 
 	/**
 	 * build namespace class name for subscriber from class name
+	 *
 	 * @param $string
 	 *
 	 * @return string
@@ -95,11 +97,12 @@ class EventDispatcher extends Component
 		$id = array_search('module', $parts);
 		$tmp = array_slice($parts, $id);
 		$namespace = join('\\', $tmp);
-		return basename('app\\'.$namespace, '.php');
+		return basename('app\\' . $namespace, '.php');
 	}
 
 	/**
 	 * gets subscribers path for glob
+	 *
 	 * @return string
 	 */
 	private function getSubscribersPAth()

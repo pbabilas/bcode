@@ -37,6 +37,7 @@ class Auth
 
 		if (\Yii::$app->getSecurity()->validatePassword($userCandidate->password, $user->password))
 		{
+
 			\Yii::$app->user->login($user, 3600);
 			return true;
 		}

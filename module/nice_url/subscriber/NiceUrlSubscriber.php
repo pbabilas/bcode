@@ -32,16 +32,13 @@ class NiceUrlSubscriber implements SubscriberInterface
 	public static function process()
 	{
 		$request = \Yii::$app->getRequest();
-
 		/** @var Language $language */
 		$language = Language::findOne(['symbol' => \Yii::$app->language]);
 
 		$niceUrlProcessor = new RequestProcessor($language, new Finder());
-
 		list($route, $params) = $niceUrlProcessor->processRequest($request);
 
 		$routes = array_merge([$route], $params);
-
 		\Yii::$app->catchAll = $routes;
 	}
 

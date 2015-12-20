@@ -54,7 +54,8 @@ class DefaultController extends AbstractController
 
 		if (\Yii::$app->request->isPost)
 		{
-			$userCandidate->load(\Yii::$app->request->post('User'));
+
+			$userCandidate->load(\Yii::$app->request->post());
 
 			$auth = new Auth();
 			$result = $auth->login($userCandidate);

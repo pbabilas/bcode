@@ -20,13 +20,13 @@ abstract class AbstractAdminController extends AbstractController
 
 	public function beforeAction($action)
 	{
-//		if (\Yii::$app->user->isGuest)
-//		{
-//			\Yii::$app->user->setReturnUrl(\Yii::$app->request->url);
-//			$this->addMessage('user', 'restricted_area', Message::ALERT);
-//			$this->redirect('/user/login');
-//			return false;
-//		}
+		if (\Yii::$app->user->isGuest)
+		{
+			\Yii::$app->user->setReturnUrl(\Yii::$app->request->url);
+			$this->addMessage('user', 'restricted_area', Message::ALERT);
+			$this->redirect('/user/login');
+			return false;
+		}
 		return true;
 	}
 }

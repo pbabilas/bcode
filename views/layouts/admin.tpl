@@ -27,6 +27,9 @@
     ]
     ])|void}
 
+    <p class="navbar-text navbar-right">
+        `user.logged_as` {\Yii::$app->user->identity->name}, <a href="/user/logout" class="navbar-link">`user.logout`</a>!
+    </p>
     {NavBar::end()|void}
 
     <div class="container">

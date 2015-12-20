@@ -26,6 +26,10 @@ $config = [
 			'class' => 'app\module\user\Module',
 			'defaultRoute' => 'default/login',
 		],
+		'module' => [
+			'class' => 'app\module\module\Module',
+			'defaultRoute' => 'default/index',
+		],
 		'error' => [
 			'class' => 'app\module\error\Module',
 			'defaultRoute' => 'default/error',
@@ -83,6 +87,13 @@ $config = [
 				'user' => [
 					'class' => 'yii\i18n\PhpMessageSource',
 					'basePath' => "@app/module/user/lang",
+					'fileMap' => [
+						'user' =>'general.php'
+					]
+				],
+				'module' => [
+					'class' => 'yii\i18n\PhpMessageSource',
+					'basePath' => "@app/module/module/lang",
 					'fileMap' => [
 						'user' =>'general.php'
 					]

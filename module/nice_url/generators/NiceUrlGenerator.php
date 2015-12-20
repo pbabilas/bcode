@@ -32,7 +32,7 @@ class NiceUrlGenerator
 			/** @var NiceUrl $niceUrl */
 			foreach ($niceUrlCollection as $niceUrl)
 			{
-				NiceUrlRemover::deleteOldNiceUrl($niceUrl);
+				NiceUrlRemover::dropOldNiceUrl($niceUrl);
 				$niceUrl->save();
 			}
 
