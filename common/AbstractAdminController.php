@@ -9,7 +9,9 @@
 namespace app\common;
 
 
+use app\module\module\models\Module;
 use Yii;
+use yii\web\NotFoundHttpException;
 
 abstract class AbstractAdminController extends AbstractController
 {
@@ -27,6 +29,28 @@ abstract class AbstractAdminController extends AbstractController
 			$this->redirect('/user/login');
 			return false;
 		}
+
+		$moduleName = $this->module->id;
+		/** @var Module $module */
+		$module = Module::findOne(['name' => $moduleName]);
+		$this->checkAdminAccess($module);
+
 		return true;
+	}
+
+	/**
+	 * @param \app\module\module\models\Module $moduleInstalled
+	 * @throws NotFoundHttpException
+	 */
+	private function checkAdminAccess($moduleInstalled)
+	{
+		if ($moduleInstalled->admin_access == false)
+		{
+			if (\Yii::$app->user->can('accessModule') == false)
+			{
+				throw new NotFoundHttpException('You are not authorized to access this area');
+			}
+		}
+
 	}
 }

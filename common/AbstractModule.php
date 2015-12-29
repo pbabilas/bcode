@@ -50,6 +50,5 @@ abstract class AbstractModule extends Module
 				throw new NotFoundHttpException('You are not authorized to access this area');
 			}
 		}
-
 	}
 }

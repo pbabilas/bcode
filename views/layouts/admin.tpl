@@ -21,10 +21,10 @@
     {$this->beginBody()}
 
     {NavBar::begin([ 'brandLabel' => '<strong>{<span style="color: red">b</span>-<span style="color: black">code</span>}</strong>',
-    'brandUrl' => '/admin',
-    'options' => [
-    'class' => 'navbar navbar-default navbar-fixed-top'
-    ]
+        'brandUrl' => '/admin',
+        'options' => [
+        'class' => 'navbar navbar-default navbar-fixed-top'
+            ]
     ])|void}
 
     <p class="navbar-text navbar-right">
@@ -42,18 +42,14 @@
 
 
         {if Yii::$app->session->hasFlash('alert')}
-
             <div class="alert alert-danger">
-                {Html::encode(Yii::$app->session->getFlash('alert'))}
+                {Yii::$app->session->getFlash('alert')|replace:'\n':'<br />'}
             </div>
-
         {/if}
         {if Yii::$app->session->hasFlash('info')}
-
             <div class="alert alert-info">
-                {Html::encode(Yii::$app->session->getFlash('info'))}
+                {Yii::$app->session->getFlash('info')|replace:'\n':'<br />'}
             </div>
-
         {/if}
         {$content}
     </div>

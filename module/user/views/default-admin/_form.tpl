@@ -42,6 +42,14 @@
 
                 <div class="help-block"></div>
             </div>
+
+            <div class="field-user-technical-user">
+                <label class="control-label" for="technical-user">`user.technical_user`</label>
+                {$roles = Yii::$app->getAuthManager()->getRolesByUser($user->id)}
+                {Html::checkbox('technical_user', array_key_exists('accessModule', $roles), ['class' => 'form-control', 'id' => 'technical-user'])}
+
+                <div class="help-block"></div>
+            </div>
             <div class="form-group">
                 {Html::submitButton('`page.save`', ['class' => 'btn btn-success'])}
             </div>

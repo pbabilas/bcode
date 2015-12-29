@@ -17,6 +17,7 @@ use Yii;
  * @property string $long_name__en
  * @property integer $version
  * @property integer technical_user_only
+ * @property integer admin_access
  */
 class Module extends AbstractMultiLangModel
 {
@@ -36,7 +37,7 @@ class Module extends AbstractMultiLangModel
 		return [
 			LanguageFieldFactory::process('long_name', ['required']),
 			[['name', 'is_active'], 'required'],
-			[['is_active', 'is_visible', 'version', 'technical_user_only'], 'integer'],
+			[['is_active', 'is_visible', 'version', 'technical_user_only', 'admin_access'], 'integer'],
 			LanguageFieldFactory::process('long_name', ['string', 'max' => 255]),
 			[['name'], 'string', 'max' => 255],
 			[['name'], 'unique']
