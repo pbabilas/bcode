@@ -2,8 +2,11 @@
 
 namespace app\module\module\models;
 
+use app\common\AbstractInstallator;
 use app\common\model\AbstractMultiLangModel;
 use app\module\language\factory\LanguageFieldFactory;
+use app\module\module\exception\ModuleInstallatorNotFound;
+use app\module\module\BaseInstallator;
 use Yii;
 
 /**
@@ -12,12 +15,11 @@ use Yii;
  * @property integer $id
  * @property string $name
  * @property integer $is_active
- * @property integer $is_visible
- * @property string $long_name__pl
- * @property string $long_name__en
+ * @property string $long_name
  * @property integer $version
  * @property integer technical_user_only
  * @property integer admin_access
+ * @property string $icon
  */
 class Module extends AbstractMultiLangModel
 {
@@ -26,7 +28,12 @@ class Module extends AbstractMultiLangModel
 	 */
 	public static function tableName()
 	{
-		return 'module';
+		return 'core_module';
+	}
+
+	public function init()
+	{
+		$this->fillEmptyMultilangFields();
 	}
 
 	/**
@@ -37,26 +44,11 @@ class Module extends AbstractMultiLangModel
 		return [
 			LanguageFieldFactory::process('long_name', ['required']),
 			[['name', 'is_active'], 'required'],
-			[['is_active', 'is_visible', 'version', 'technical_user_only', 'admin_access'], 'integer'],
+			[['is_active', 'version', 'technical_user_only', 'admin_access'], 'integer'],
 			LanguageFieldFactory::process('long_name', ['string', 'max' => 255]),
 			[['name'], 'string', 'max' => 255],
+			[['icon'], 'string', 'max' => 32],
 			[['name'], 'unique']
-		];
-	}
-
-	/**
-	 * @inheritdoc
-	 */
-	public function attributeLabels()
-	{
-		return [
-			'id'            => 'ID',
-			'name'          => 'Name',
-			'is_active'     => 'Is Active',
-			'is_visible'    => 'Is Visible',
-			'long_name__pl' => 'Long Name  Pl',
-			'long_name__en' => 'Long Name  En',
-			'version'       => 'Version',
 		];
 	}
 
@@ -85,5 +77,51 @@ class Module extends AbstractMultiLangModel
 	public function isEnabled()
 	{
 		return $this->is_active;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getNewestVersionId()
+	{
+		try
+		{
+			$installator = $this->getInstallator();
+			return $installator->getActualVersion();
+		}
+		catch (ModuleInstallatorNotFound $e)
+		{
+			return 0;
+		}
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isActual()
+	{
+		return $this->version >= $this->getNewestVersionId();
+	}
+
+	/**
+	 * @return AbstractInstallator
+	 *
+	 * @throws ModuleInstallatorNotFound
+	 */
+	public function getInstallator()
+	{
+		$installatorClassName = sprintf(BaseInstallator::MODULE_NAMESPACE_PATTERN, $this->name);
+
+		if (class_exists($installatorClassName))
+		{
+			$installator = new $installatorClassName($this);
+
+			if ($installator instanceof AbstractInstallator)
+			{
+				return $installator;
+			}
+		}
+
+		throw new ModuleInstallatorNotFound($this->name);
 	}
 }

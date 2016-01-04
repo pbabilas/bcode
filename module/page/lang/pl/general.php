@@ -13,4 +13,8 @@ return [
 	'page_edit' => 'Edycja Stron Informacyjnych',
 	'edit_info' => 'Tutaj możesz edytować strony informacyjne wyświetlane na Twojej witrynie.',
 	'not_found' => 'Nie znaleziono strony',
+	'options' => 'Opcje',
+	'edit' => 'Edytuj',
+	'delete_page' => 'Usuń',
+	'updated_successful' => 'Strona zaktualizowana'
 ];

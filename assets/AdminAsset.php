@@ -16,6 +16,7 @@ class AdminAsset extends AssetBundle
     public $basePath = '@webroot';
     public $baseUrl = '@web';
     public $css = [
+        'awsome/css/font-awesome.min.css',
         'css/admin.css',
     ];
     public $js = [
@@ -24,6 +25,9 @@ class AdminAsset extends AssetBundle
     ];
     public $depends = [
         'yii\web\YiiAsset',
+        'yii\jui\JuiAsset',
         'app\assets\BootstrapAsset',
+        'app\assets\LTEAsset',
+        'app\assets\WysiwygAsset'
     ];
 }

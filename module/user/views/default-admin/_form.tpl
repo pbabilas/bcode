@@ -2,60 +2,50 @@
 {use class="yii\widgets\ActiveForm"}
 {use class="app\decorator\HTMLDecorator"}
 
-<div class="page-form">
-
-    {$form = ActiveForm::begin()}
-
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            Główne
-            {HTMLDecorator::langSwitcher()}
-        </div>
-
-
-        <div class="panel-body">
-
-            <div class="form-group field-user-name{if $user->hasErrors('name')} has-error{/if}">
-                <label class="control-label" for="user-name">`user.name`</label>
-                {Html::input('text', 'User[name]', $user->name, ['class' => 'form-control', 'id' => 'user-name', 'max-length' => '100'])}
-                <div class="help-block"></div>
-            </div>
-
-            <div class="field-user-email{if $user->hasErrors('email')} has-error{/if}">
-                <label class="control-label" for="user-email">`user.email`</label>
-                {Html::input('text', 'User[email]', $user->email, ['class' => 'form-control', 'id' => 'user-name', 'max-length' => '100'])}
-
-                <div class="help-block"></div>
-            </div>
-
-            <div class="field-user-password{if $user->hasErrors('password')} has-error{/if}">
-                <label class="control-label" for="user-password">`user.password`</label>
-                {Html::input('password', 'User[password]', $user->password, ['class' => 'form-control', 'id' => 'user-name', 'max-length' => '100'])}
-
-                <div class="help-block"></div>
-            </div>
-
-            <div class="field-user-technical-user">
-                <label class="control-label" for="technical-user">`user.technical_user`</label>
-                {$roles = Yii::$app->getAuthManager()->getRolesByUser($user->id)}
-                {Html::checkbox('technical_user', array_key_exists('accessModule', $roles), ['class' => 'form-control', 'id' => 'technical-user'])}
-
-                <div class="help-block"></div>
-            </div>
-
-            <div class="field-user-technical-user">
-                <label class="control-label" for="technical-user">`user.technical_user`</label>
-                {$roles = Yii::$app->getAuthManager()->getRolesByUser($user->id)}
-                {Html::checkbox('technical_user', array_key_exists('accessModule', $roles), ['class' => 'form-control', 'id' => 'technical-user'])}
-
-                <div class="help-block"></div>
-            </div>
-            <div class="form-group">
-                {Html::submitButton('`page.save`', ['class' => 'btn btn-success'])}
-            </div>
-        </div>
+<!-- /.box-header -->
+<!-- form start -->
+{$form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']])}
+<div class="box-body">
+    <div class="form-group">
+        <label for="page-title">`user.name`</label>
+        {Html::input('text', 'User[name]', $user->name, ['class' => 'form-control', 'id' => 'user-name', 'max-length' => '100'])}
+    </div>
+    <div class="form-group">
+        <label for="page-body">`user.email`</label>
+        {Html::input('text', 'User[email]', $user->email, ['class' => 'form-control', 'id' => 'user-name', 'max-length' => '100'])}
+    </div>
+    <div class="form-group">
+        <label for="page-body">`user.password`</label>
+        {Html::input('password', 'User[password]', $user->password, ['class' => 'form-control', 'id' => 'user-name', 'max-length' => '100'])}
+    </div>
+    <div class="checkbox">
+        <label for="page-body">
+            {$roles = Yii::$app->getAuthManager()->getRolesByUser($user->id)}
+            {Html::checkbox('technical_user', array_key_exists('accessModule', $roles), ['id' => 'technical-user'])}
+            `user.technical`
+        </label>
     </div>
 
-    {ActiveForm::end()|void}
+    <div class="form-group">
+        <div class="pull-left">
+            <img src="{$user->getPictureUrl($user->picture_filename, '100x100')}" class="img-circle" />
+        </div>
+        <div class="pull-left col-lg-offset-1">
+            <label for="exampleInputFile">`user.picture`</label>
+            <input type="file" id="picture" name="userPicture">
+            <p class="help-block">
+                <label for="exampleInputFile">
+                    {Html::checkbox('userPictureDelete', false, ['id' => 'user-picture-delete'])}
+                    `user.picture-delete`
+                </label>
+            </p>
+        </div>
 
+    </div>
 </div>
+<!-- /.box-body -->
+
+<div class="box-footer">
+    <button type="submit" class="btn btn-flat btn-primary">`user.save`</button>
+</div>
+{ActiveForm::end()|void}

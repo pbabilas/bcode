@@ -26,6 +26,11 @@ class Page extends AbstractMultiLangModel implements NiceUrlInterface
         return 'page';
     }
 
+	public function init()
+	{
+		$this->fillEmptyMultilangFields();
+	}
+
     /**
      * @inheritdoc
      */
@@ -124,4 +129,5 @@ class Page extends AbstractMultiLangModel implements NiceUrlInterface
 	{
 		return $this->id;
 	}
+
 }

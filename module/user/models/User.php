@@ -3,7 +3,8 @@
 namespace app\module\user\models;
 
 use app\common\model\AbstractModel;
-use app\module\nice_url\interfaces\NiceUrlInterface;
+use app\module\thumbnailer\Constants;
+use app\module\thumbnailer\interfaces\HasPictureInterface;
 use Yii;
 use \yii\db\ActiveRecord;
 use \yii\web\IdentityInterface;
@@ -17,10 +18,14 @@ use \yii\web\IdentityInterface;
  * @property string $authKey
  * @property string $email
  * @property string $accessToken
+ * @property mixed $picture_filename
  *
  */
-class User extends AbstractModel implements IdentityInterface
+class User extends AbstractModel implements IdentityInterface, HasPictureInterface
 {
+
+    const PICTURE_DIR = 'user/';
+
     /**
      * @inheritdoc
      */
@@ -37,8 +42,8 @@ class User extends AbstractModel implements IdentityInterface
         return [
             [['name', 'password', 'email'], 'required'],
             [['name', 'authKey', 'accessToken', 'email'], 'string', 'max' => 100],
-            [['password'], 'string', 'max' => 255],
-            [['name'], 'unique']
+            [['password', 'picture_filename'], 'string', 'max' => 255],
+            [['name', 'picture_filename'], 'unique']
         ];
     }
 
@@ -125,5 +130,40 @@ class User extends AbstractModel implements IdentityInterface
             ->where(['accessToken' => $token])
             ->one();
         return $user;
+    }
+
+    /**
+     * @param string $filename
+     * @param string $size
+     *
+     * @return string
+     */
+    public function getPicturePath($filename, $size = 'full_size')
+    {
+        return sprintf(
+            '%s/web%s%s%s/%s',
+            \Yii::$app->getBasePath(),
+            Constants::PICTURES_PATH,
+            User::PICTURE_DIR,
+            $size,
+            $filename
+        );
+    }
+
+    /**
+     * @param string $filename
+     * @param string $size
+     *
+     * @return string
+     */
+    public function getPictureUrl($filename, $size = 'full_size')
+    {
+        return sprintf(
+            '%s%s%s/%s',
+            'pictures/',
+            User::PICTURE_DIR,
+            $size,
+            $filename
+        );
     }
 }

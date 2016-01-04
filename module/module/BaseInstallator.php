@@ -2,9 +2,7 @@
 
 namespace app\module\module;
 
-use app\common\AbstractInstallator;
 use app\module\module\exception\InstallFailedException;
-use app\module\module\exception\ModuleInstallatorNotFound;
 use app\module\module\exception\ModuleValidationException;
 use app\module\module\models\Module as ModuleModel;
 use yii\base\Module as BaseModule;
@@ -13,7 +11,7 @@ use yii\base\Module as BaseModule;
  * @user: Pawel Babilas
  * @date: 21.12.2015
  */
-class Installator
+class BaseInstallator
 {
 
 	const MODULE_NAMESPACE_PATTERN = 'app\module\%s\Installator';
@@ -37,7 +35,7 @@ class Installator
 	 * @throws InstallFailedException
 	 * @throws ModuleValidationException
 	 */
-	public function runWithData($data)
+	public function runWithData($data = [])
 	{
 		$module = $this->getModule();
 		$module->load($data);
@@ -48,8 +46,8 @@ class Installator
 			throw $exception;
 		}
 
-		$installator = $this->getModuleInstallator($module);
-		$result = $installator->run();
+		$installator = $module->getInstallator();
+		$result = $installator->install();
 
 		if ($result == false)
 		{
@@ -58,30 +56,6 @@ class Installator
 		}
 
 		return $result;
-	}
-
-	/**
-	 * @param ModuleModel $module
-	 *
-	 * @return AbstractInstallator|bool
-	 *
-	 * @throws ModuleInstallatorNotFound
-	 */
-	private function getModuleInstallator(ModuleModel $module)
-	{
-		$installatorClassName = sprintf(Installator::MODULE_NAMESPACE_PATTERN, $this->module->id);
-
-		if (class_exists($installatorClassName))
-		{
-			$installator = new $installatorClassName($module);
-
-			if ($installator instanceof AbstractInstallator)
-			{
-				return $installator;
-			}
-		}
-
-		throw new ModuleInstallatorNotFound($module->name);
 	}
 
 	/**

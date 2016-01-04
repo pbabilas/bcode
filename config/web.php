@@ -34,6 +34,10 @@ $config = [
 			'class' => 'app\module\error\Module',
 			'defaultRoute' => 'default/error',
 		],
+		'thumbnailer' => [
+			'class' => 'app\module\thumbnailer\Module',
+			'defaultRoute' => 'default/create',
+		],
 	],
     'components' => [
 		'bundles' => [
@@ -52,9 +56,11 @@ $config = [
         'user' => [
             'identityClass' => 'app\module\user\models\User',
             'enableAutoLogin' => true,
+			'autoRenewCookie' => true,
+			'authTimeout' => 3600,
         ],
         'errorHandler' => [
-            'errorAction' => 'site/error',
+            'errorAction' => 'error/show',
         ],
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
@@ -105,6 +111,7 @@ $config = [
 			'enablePrettyUrl' => true,
 			'showScriptName' => false,
 			'rules' => [
+
 				'admin' => 'dashboard/default-admin/',
 				'admin/<module:\w+>/<action:\w+>' => '<module>/default-admin/<action>',
 				'admin/<module:\w+>' => '<module>/default-admin/',
@@ -113,6 +120,7 @@ $config = [
 //				'<module:\w+>/<controller:\w+>-admin/<route:\w+>' => 'site/error',
 //				'<module:\w+>/<controller:\w+>-admin/' => 'site/error',
 //				'<module:\w+>/<controller:\w+>-admin' => 'site/error',
+				'pictures/<type:\w+>/<size:\w+>/<pictureFilename:.+?>.<extension:\w+>' => 'thumbnailer/create',
 			]
 
 		],

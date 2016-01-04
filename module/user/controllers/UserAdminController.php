@@ -3,10 +3,14 @@
 namespace app\module\user\controllers;
 
 use app\common\AbstractAdminController;
+use app\common\Message;
+use app\module\thumbnailer\Constants;
+use app\module\thumbnailer\picture\Uploader;
 use app\module\user\models\User;
 use app\module\user\models\UserSearch;
 use Yii;
 use yii\web\NotFoundHttpException;
+use yii\web\UploadedFile;
 
 
 class DefaultAdminController extends AbstractAdminController
@@ -25,7 +29,7 @@ class DefaultAdminController extends AbstractAdminController
 		$this->addBreadcrumb([$this->view->title]);
 
 		return $this->render('index.tpl', [
-			'searchModel' => $searchModel,
+			'searchModel'  => $searchModel,
 			'dataProvider' => $dataProvider,
 		]);
 	}
@@ -40,6 +44,11 @@ class DefaultAdminController extends AbstractAdminController
 			$user->setAccessToken();
 			$user->setAuthKey();
 			$user->password = Yii::$app->getSecurity()->generatePasswordHash($user->password);
+
+			if ($user->picture_filename = $this->handleUploadedPicture() == false)
+			{
+				$user->addError('picture_filename', '`user.file_upload_failed`');
+			}
 
 			if ($user->save())
 			{
@@ -69,11 +78,10 @@ class DefaultAdminController extends AbstractAdminController
 		]);
 	}
 
-	public function actionUpdate($id)
+	public function actionEdit($id)
 	{
 		/** @var User $user */
 		$user = User::findOne(['id' => $id]);
-
 
 		if (is_null($user))
 		{
@@ -94,6 +102,17 @@ class DefaultAdminController extends AbstractAdminController
 				$user->password = Yii::$app->getSecurity()->generatePasswordHash($data['password']);
 			}
 
+			$filename = $this->handleUploadedPicture();
+
+			if ($filename == false)
+			{
+				$user->addError('picture_filename', '`user.file_upload_failed`');
+			}
+			else
+			{
+				$user->picture_filename = $filename;
+			}
+
 			if ($user->save())
 			{
 				$auth = Yii::$app->getAuthManager();
@@ -104,9 +123,7 @@ class DefaultAdminController extends AbstractAdminController
 				}
 				else
 				{
-//					$auth = Yii::$app->getAuthManager();
-//					$role = $auth->getRole('accessModule');
-//					$auth->
+					//delete auth
 				}
 
 				return $this->redirect(['/admin/user']);
@@ -124,9 +141,28 @@ class DefaultAdminController extends AbstractAdminController
 			$this->view->title
 		]);
 
-		return $this->render('update.tpl', [
+		return $this->render('edit.tpl', [
 			'user' => $user,
 		]);
+	}
+
+	public function actionDelete($id)
+	{
+		try
+		{
+			/** @var User $user */
+			$user = $this->findModel($id);
+
+			$user->delete();
+			$this->addMessage('user', 'delete_success', Message::INFO);
+		}
+		catch (NotFoundHttpException $e)
+		{
+			$this->addMessage('user', 'not_found', Message::ALERT);
+		}
+
+		return $this->redirect('/admin/user');
+
 	}
 
 
@@ -137,10 +173,24 @@ class DefaultAdminController extends AbstractAdminController
 	 */
 	protected function findModel($id)
 	{
-		if (($model = User::findOne($id)) !== null) {
+		if (($model = User::findOne($id)) !== null)
+		{
 			return $model;
-		} else {
+		}
+		else
+		{
 			throw new NotFoundHttpException('The requested page does not exist.');
 		}
+	}
+
+	/**
+	 * @return bool|string filename
+	 */
+	private function handleUploadedPicture()
+	{
+		$uploadedFile = UploadedFile::getInstanceByName('userPicture');
+
+		$uploader = new Uploader(Constants::PICTURES_PATH . User::PICTURE_DIR, true);
+		return $uploader->runforFile($uploadedFile);
 	}
 }

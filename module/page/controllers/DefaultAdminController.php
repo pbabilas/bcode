@@ -4,6 +4,7 @@ namespace app\module\page\controllers;
 
 use app\common\AbstractAdminController;
 use app\common\Message;
+use PDO;
 use Yii;
 use app\module\page\models\Page;
 use app\module\page\models\PageSearch;
@@ -29,9 +30,18 @@ class DefaultAdminController extends AbstractAdminController
 
     public function actionIndex()
     {
+
+//		$sql = "SELECT symbol FROM language";
+//		$langs = \Yii::$app->getDb()->createCommand($sql)->queryAll(PDO::FETCH_COLUMN);
+//		$defaultLang = \Yii::$app->sourceLanguage;
+//
+//		unset( $langs[ array_search($defaultLang, $langs )] ); // now contains langs without defaultLang
+//
+//		var_dump($langs);
+//		die();
+
         $searchModel = new PageSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
 		$this->view->title = '`page.pages`';
 		$this->addBreadcrumb([$this->view->title]);
 
@@ -66,6 +76,34 @@ class DefaultAdminController extends AbstractAdminController
 			'page' => $model,
 		]);
     }
+
+	public function actionEdit($id)
+	{
+		/** @var Page $model */
+		$model = Page::findOne(['id' => $id]);
+
+		if (Yii::$app->request->isPost)
+		{
+			$model->load(Yii::$app->request->post());
+
+			if ($model->save())
+			{
+				$this->addMessage('page', 'updated_successful', Message::INFO);
+				return $this->redirect(['/admin/page']);
+			}
+
+			$this->addErrorMessagesFromModel($model);
+		}
+
+		$this->view->title = '`page.edit_page`';
+		$this->addBreadcrumb([
+			['label' => '`page.Pages`', 'url' => ['index']],
+			$this->view->title
+		]);
+		return $this->render('edit.tpl', [
+			'page' => $model,
+		]);
+	}
 
     public function actionUpdate($id)
     {

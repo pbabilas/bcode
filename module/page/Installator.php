@@ -10,7 +10,6 @@ namespace app\module\page;
 use app\common\AbstractInstallator;
 use app\helper\LanguageHelper;
 use app\module\language\models\Language;
-use yii\db\mssql\QueryBuilder;
 
 class Installator extends AbstractInstallator
 {
@@ -18,10 +17,20 @@ class Installator extends AbstractInstallator
 	/**
 	 * @return array
 	 */
-	protected function getActions()
+	protected function getInstallActions()
 	{
 		return [
-			1 => 'createTable'
+			1 => 'createTable',
+		];
+	}
+
+	/**
+	 * @return array
+	 */
+	protected function getUninstallActions()
+	{
+		return [
+			1 => 'dropTable'
 		];
 	}
 
@@ -44,5 +53,13 @@ class Installator extends AbstractInstallator
 
 		$db = \Yii::$app->getDb();
 		$db->createCommand($createTableSyntax)->execute();
+	}
+
+	protected function dropTable()
+	{
+		$sql = 'DROP TABLE page';
+
+		$db = \Yii::$app->getDb();
+		$db->createCommand($sql)->execute();
 	}
 }

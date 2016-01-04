@@ -21,4 +21,5 @@ interface MultiLangModelInterface
 	 * @return array
 	 */
 	public function getMultiLangFields();
+
 }

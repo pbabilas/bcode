@@ -9,8 +9,6 @@
 namespace app\module\page\controllers;
 
 use app\module\page\models\Page;
-use yii\base\Event;
-use yii\db\BaseActiveRecord;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 

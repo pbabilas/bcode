@@ -31,3 +31,6 @@ phpunit.phar
 
 #config files
 /config/db.php
+
+#pictures
+/web/pictures/*/

@@ -2,19 +2,18 @@
 
 namespace app\module\user\controllers;
 
-use app\common\AbstractController;
+use app\common\AbstractAdminController;
 use app\common\Message;
 use app\module\user\models\User;
 use app\module\user\security\Auth;
 use Yii;
-use yii\base\ErrorException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
  * UserController implements the CRUD actions for User model.
  */
-class DefaultController extends AbstractController
+class Controller extends AbstractAdminController
 {
 	public function behaviors()
 	{

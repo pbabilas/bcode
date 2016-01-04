@@ -7,6 +7,8 @@ $(document).ready(function()
 
     $('.langs').on('click', 'a', function()
     {
+        $('.langs a').fadeTo(100,'0.5');
+        $(this).fadeTo(100, '1');
         var lang = $(this).data('src');
 
         multiLangFields.hide();
@@ -21,4 +23,7 @@ $(document).ready(function()
         });
         return false;
     });
+
+    $('.wysiwyg').wysihtml5();
+    $().modal();
 });

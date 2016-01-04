@@ -1,22 +1,17 @@
 {use class="yii\helpers\Html"}
+{use class="app\decorator\HTMLDecorator"}
 
-<div class="col-lg-4">
-    <div class="panel panel-info">
-        <div class="panel-heading">
-            `user.user_create`
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">`user.create_user`</h3>
+            </div>
+
+            {$this->render('_form.tpl', [
+                'user' => $user
+            ]) }
         </div>
-
-        <p class="panel-body">
-            `user.user_info`.<br />
-            <br />
-        </p>
     </div>
-</div>
-
-<div class="page-create col-lg-8">
-
-    {$this->render('_form.tpl', [
-        'user' => $user
-    ]) }
 
 </div>

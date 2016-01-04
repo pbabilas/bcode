@@ -1,22 +1,18 @@
 {use class="yii\helpers\Html"}
+{use class="app\decorator\HTMLDecorator"}
 
-<div class="col-lg-4">
-    <div class="panel panel-info">
-        <div class="panel-heading">
-            `page.page_edit`
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">`page.create_page`</h3>
+                {HTMLDecorator::langSwitcher()}
+            </div>
+
+            {$this->render('_form.tpl', [
+                'page' => $page
+            ]) }
         </div>
-
-        <p class="panel-body">
-            `page.edit_info`.<br />
-            <br />
-        </p>
     </div>
-</div>
-
-<div class="page-create col-lg-8">
-
-    {$this->render('_form.tpl', [
-        'page' => $page
-    ]) }
 
 </div>
