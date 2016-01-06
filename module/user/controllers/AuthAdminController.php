@@ -13,7 +13,7 @@ use yii\filters\VerbFilter;
 /**
  * UserController implements the CRUD actions for User model.
  */
-class Controller extends AbstractAdminController
+class DefaultAdminController extends AbstractAdminController
 {
 	public function behaviors()
 	{
@@ -25,6 +25,11 @@ class Controller extends AbstractAdminController
 				],
 			],
 		];
+	}
+
+	public function init()
+	{
+		Yii::$app->layout = 'login.tpl';
 	}
 
 	/**
@@ -53,7 +58,6 @@ class Controller extends AbstractAdminController
 
 		if (\Yii::$app->request->isPost)
 		{
-
 			$userCandidate->load(\Yii::$app->request->post());
 
 			$auth = new Auth();
