@@ -76,8 +76,9 @@ class RequestProcessor
 
 		}
 
-		$url = sprintf('%s/%s',
+		$url = sprintf('%s/%s/%s',
 				$niceUrlObject->getNiceUrlModuleName(),
+				$niceUrlObject->getNiceUrlControllerId(),
 				$niceUrlObject->getNiceUrlModuleAction()
 		);
 

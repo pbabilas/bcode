@@ -130,4 +130,11 @@ class Page extends AbstractMultiLangModel implements NiceUrlInterface
 		return $this->id;
 	}
 
+	/**
+	 * @return string
+	 */
+	public function getNiceUrlControllerId()
+	{
+		return 'page';
+	}
 }

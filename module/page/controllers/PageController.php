@@ -8,11 +8,10 @@
 
 namespace app\module\page\controllers;
 
-use app\module\page\models\Page;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 
-class DefaultController extends Controller
+class PageController extends Controller
 {
 	public function behaviors()
 	{
@@ -28,16 +27,12 @@ class DefaultController extends Controller
 
 	public function actionIndex()
 	{
-		/** @var Page $page */
-		$page = Page::findOne(['id' => 14]);
-		$page->title__pl = md5('ssss'.time());
-		$page->save();
-		die('po save');
+		die('udało się page');
 	}
 
-	public function test()
+	public function actionShow($id)
 	{
-		die('test raz dwa trz');
+		die('strona dziala');
 	}
 
 

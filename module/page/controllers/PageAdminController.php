@@ -145,7 +145,7 @@ class PageAdminController extends AbstractAdminController
 			$this->addMessage('page', 'not_found', Message::ALERT);
 		}
 
-        return $this->redirect(['index']);
+        return $this->redirect('admin/page');
     }
 
     /**

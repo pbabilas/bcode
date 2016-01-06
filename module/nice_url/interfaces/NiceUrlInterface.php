@@ -25,6 +25,11 @@ interface NiceUrlInterface
 	/**
 	 * @return string
 	 */
+	public function getNiceUrlControllerId();
+
+	/**
+	 * @return string
+	 */
 	public function getNiceUrlModuleAction();
 
 	/**

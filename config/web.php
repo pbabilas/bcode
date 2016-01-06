@@ -5,10 +5,15 @@ $params = require(__DIR__ . '/params.php');
 $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
-    'bootstrap' => ['log', 'EventDispatcher', 'AdminRoutePlugin', 'DefaultModuleRoutePlugin'],
+    'bootstrap' => [
+		'log',
+		'AdminRoutePlugin',
+		'DefaultModuleRoutePlugin',
+		'EventDispatcher',
+	],
 	'language' => 'pl',
 	'layout' => 'main.tpl',
-	'defaultRoute' => 'index/index',
+	'defaultRoute' => 'page/page/index',
 	'modules' => [
 		'page' => [
 			'class' => 'app\module\page\Module',
@@ -117,15 +122,6 @@ $config = [
 			'enablePrettyUrl' => true,
 			'showScriptName' => false,
 			'rules' => [
-
-//				'admin' => 'dashboard/default-admin/',
-//				'admin/<module:\w+>/<action:\w+>' => '<module>/default-admin/<action>',
-//				'admin/<module:\w+>' => '<module>/default-admin/',
-//				'<module:\w+>/<action:\w+>' => '<module>/default/<action>',
-//				'<module:\w+>' => '<module>/admin/',
-//				'<module:\w+>/<controller:\w+>-admin/<route:\w+>' => 'site/error',
-//				'<module:\w+>/<controller:\w+>-admin/' => 'site/error',
-//				'<module:\w+>/<controller:\w+>-admin' => 'site/error',
 				'pictures/<type:\w+>/<size:\w+>/<pictureFilename:.+?>.<extension:\w+>' => 'thumbnailer/create/index',
 			]
 
