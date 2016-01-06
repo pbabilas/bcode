@@ -18,7 +18,7 @@ abstract class AbstractAdminController extends AbstractController
 
 	/** @var array  */
 	public $menuItems = [];
-	/** @var null  */
+	/** @var Module  */
 	public $currentModule = null;
 
 	public static $allowedControllerAction = [
@@ -30,6 +30,10 @@ abstract class AbstractAdminController extends AbstractController
 
 	public function init()
 	{
+
+		$moduleName = $this->module->id;
+		/** @var Module $module */
+		$this->currentModule = Module::findOne(['name' => $moduleName]);
 //		$checkAuth = $this->module->id != 'user' && $this->action == 'login';
 //		var_dump($this->module->id != 'user');
 //		var_dump(!$this->action);
@@ -42,6 +46,8 @@ abstract class AbstractAdminController extends AbstractController
 			$this->redirect('/admin/user/auth/login');
 			return false;
 		}
+
+		$this->checkModuleAccess();
 
 		$menuItems = Module::find()->all();
 		/** @var Module $menuItem */
@@ -75,23 +81,31 @@ abstract class AbstractAdminController extends AbstractController
 
 	public function beforeAction($action)
 	{
-		$moduleName = $this->module->id;
-		/** @var Module $module */
-		$module = Module::findOne(['name' => $moduleName]);
-//		$this->checkAdminAccess($module);
-
-		$this->currentModule = $module;
+		$this->checkAdminAccess();
 
 		return true;
 	}
 
 	/**
-	 * @param \app\module\module\models\Module $moduleInstalled
 	 * @throws NotFoundHttpException
 	 */
-	private function checkAdminAccess($moduleInstalled)
+	private function checkModuleAccess()
 	{
-		if ($moduleInstalled->admin_access == false)
+		if ($this->currentModule->technical_user_only)
+		{
+			if (\Yii::$app->user->can('accessModule') == false)
+			{
+				throw new NotFoundHttpException('You are not authorized to access this area');
+			}
+		}
+	}
+
+	/**
+	 * @throws NotFoundHttpException
+	 */
+	private function checkAdminAccess()
+	{
+		if ($this->currentModule->admin_access == false)
 		{
 			if (\Yii::$app->user->can('accessModule') == false)
 			{

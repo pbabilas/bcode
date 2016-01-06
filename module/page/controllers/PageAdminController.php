@@ -52,7 +52,7 @@ class PageAdminController extends AbstractAdminController
 
 			if ($model->save())
 			{
-				return $this->redirect(['/admin/page']);
+				return $this->redirect('page');
 			}
 
 			$this->addErrorMessagesFromModel($model);
@@ -108,7 +108,7 @@ class PageAdminController extends AbstractAdminController
 
 				if ($model->save())
 				{
-					return $this->redirect(['/admin/page']);
+					return $this->redirect('admin/page');
 				}
 
 				$this->addErrorMessagesFromModel($model);
@@ -145,7 +145,7 @@ class PageAdminController extends AbstractAdminController
 			$this->addMessage('page', 'not_found', Message::ALERT);
 		}
 
-        return $this->redirect('admin/page');
+        return $this->redirect('admin/page/');
     }
 
     /**

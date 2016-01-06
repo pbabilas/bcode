@@ -15,7 +15,7 @@ use yii\base\Component;
 class AdminPlugin extends Component
 {
 	const ADMIN_PREFIX = 'admin';
-	const SEPARATOR = '/';
+	const DEFAULT_ROUTE = 'dashboard';
 
 	/**
 	 * Method shifts admin prefix and sets Application as Admin site
@@ -23,12 +23,18 @@ class AdminPlugin extends Component
 	public function init()
 	{
 		$request = \Yii::$app->getRequest();
-		$pregPattern = sprintf('/(%s\%s)+?/', AdminPlugin::ADMIN_PREFIX, AdminPlugin::SEPARATOR);
+		$pregPattern = sprintf('/(%s)+?/', AdminPlugin::ADMIN_PREFIX);
 
 		if (preg_match($pregPattern, $request->getPathInfo()))
 		{
+			$newPathInfo = preg_replace($pregPattern, '', $request->getPathInfo());
+
+			if ($newPathInfo == '' || $newPathInfo == '/')
+			{
+				$newPathInfo = AdminPlugin::DEFAULT_ROUTE;
+			}
 			$request->setPathInfo(
-				preg_replace($pregPattern, '', $request->getPathInfo())
+				$newPathInfo
 			);
 
 			Settings::getInstance()->setAdminMode();

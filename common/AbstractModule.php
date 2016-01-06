@@ -43,42 +43,14 @@ abstract class AbstractModule extends Module
 			throw new NotFoundHttpException(sprintf('Module %s not installed or disabled', $moduleName));
 		}
 
-//		$this->checkModuleAccess($moduleInstalled);
-
 		return true;
 	}
 
 	/**
-	 * @param \app\module\module\models\Module $moduleInstalled
-	 * @throws NotFoundHttpException
-	 */
-	private function checkModuleAccess($moduleInstalled)
-	{
-		if ($moduleInstalled->technical_user_only)
-		{
-			if (\Yii::$app->user->can('accessModule') == false)
-			{
-				throw new NotFoundHttpException('You are not authorized to access this area');
-			}
-		}
-	}
-
-	/**
-	 * Creates a controller based on the given controller ID.
-	 *
-	 * The controller ID is relative to this module. The controller class
-	 * should be namespaced under [[controllerNamespace]].
-	 *
-	 * Note that this method does not check [[modules]] or [[controllerMap]].
-	 *
-	 * @param string $id the controller ID
-	 * @return Controller the newly created controller instance, or null if the controller ID is invalid.
-	 * @throws InvalidConfigException if the controller class and its file name do not match.
-	 * This exception is only thrown when in debug mode.
+	 * @inheritdoc
 	 */
 	public function createControllerByID($id)
 	{
-
 		$pos = strrpos($id, '/');
 		if ($pos === false) {
 			$prefix = '';
@@ -97,24 +69,6 @@ abstract class AbstractModule extends Module
 		}
 
 		$controllerSuffix = $this->isAdminController ? AbstractModule::ADMIN_CONTROLLER_SUFFIX : AbstractModule::CONTROLLER_SUFFIX;
-
-//		$className = str_replace(' ', '', $controllerSuffix);
-//		$className = ltrim($this->controllerNamespace . '\\' . str_replace('/', '\\', $prefix)  . $className, '\\');
-//
-//
-//		if (strpos($className, '-') !== false || !class_exists($className)) {
-//			return null;
-//		}
-//
-//		$reflectionClass = new \ReflectionClass($className);
-//
-//		if (is_subclass_of($className, 'yii\base\Controller') && $reflectionClass->hasMethod('action'.$id)) {
-//			return Yii::createObject($className, ['', $this]);
-//		} elseif (YII_DEBUG) {
-//			throw new InvalidConfigException("Controller class must extend from \\yii\\base\\Controller.");
-//		} else {
-//			return null;
-//		}
 
 		$className = str_replace(' ', '', ucwords(str_replace('-', ' ', $className))) . $controllerSuffix;
 		$className = ltrim($this->controllerNamespace . '\\' . str_replace('/', '\\', $prefix)  . $className, '\\');

@@ -37,6 +37,7 @@ class DefaultModulePlugin extends Component
 		{
 			return false;
 		}
+
 		$module = Yii::$app->getModule($id);
 
 		$controllerSuffix = Settings::getInstance()->isAdmin() ? AbstractModule::ADMIN_CONTROLLER_SUFFIX : AbstractModule::CONTROLLER_SUFFIX;

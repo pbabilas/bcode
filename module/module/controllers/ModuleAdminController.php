@@ -4,6 +4,7 @@ namespace app\module\module\controllers;
 
 use app\common\AbstractAdminController;
 use app\common\Message;
+use app\common\model\Searcher;
 use app\module\module\BaseUninstallator;
 use app\module\module\exception\InstallFailedException;
 use app\module\module\exception\ModuleInstallatorNotFound;
@@ -25,15 +26,18 @@ class ModuleAdminController extends AbstractAdminController
 		];
 	}
 
-	public function actionIndex()
+	public function actionIndex($page = 1)
 	{
-		$modules = Module::find()->all();
+		$search = new Searcher(new Module());
+		$search->setPage($page);
+		$params = \Yii::$app->getRequest()->post('Module');
+		$search->setParams((array) $params);
 
 		$this->view->title = '`module.modules`';
 		$this->addBreadcrumb([$this->view->title]);
 
 		return $this->render('admin/index.tpl', [
-			'modules' => $modules,
+			'searcher' => $search,
 		]);
 	}
 

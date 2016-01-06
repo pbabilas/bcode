@@ -119,6 +119,7 @@ $config = [
 			],
 		],
 		'urlManager' => [
+			'class' => 'app\common\url\Manager',
 			'enablePrettyUrl' => true,
 			'showScriptName' => false,
 			'rules' => [

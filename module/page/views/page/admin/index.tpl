@@ -23,6 +23,7 @@
 				<tbody><tr>
 					<th>#</th>
 					<th>`page.title`</th>
+					<td>`page.created_at`</td>
 					<th>`page.options`</th>
 				</tr>
 				{foreach $dataProvider->getModels() as $i => $page}
@@ -32,6 +33,9 @@
 							<a href="{UrlHelper::niceUrlTo($page)}">
 								{$page->title}
 							</a>
+						</td>
+						<td>
+							{$page->created_at}
 						</td>
 						<td>
 							<a href="/admin/page/edit?id={$page->id}" class="glyphicon glyphicon-edit" aria-hidden="true" title="`page.edit`"></a>

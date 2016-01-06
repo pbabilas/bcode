@@ -21,18 +21,14 @@
         <div class="box-body table-responsive no-padding">
             <table class="table table-hover">
                 <tbody><tr>
-                    <th>#</th>
-                    <th>`user.picture`</th>
                     <th>`user.login`</th>
                     <th>`user.email`</th>
                     <th></th>
                 </tr>
                 {foreach $dataProvider->getModels() as $i => $user}
                     <tr>
-                        <td>{$i+1}</td>
                         <td>
-                            <img src="{$user->getPictureUrl($user->picture_filename, '32x32')}" /></td>
-                        <td>
+                            <img src="{$user->getPictureUrl($user->picture_filename, '32x32')}" class="user-image" />
                             {$user->name}
                         </td>
                         <td>{$user->email}</td>

@@ -41,7 +41,7 @@ class AbstractController extends Controller
 	 */
 	public function addMessage($module = null, $message, $type = null)
 	{
-		if (is_null($module))
+		if (is_null($module) == false)
 		{
 			$message = new Message("`$module.$message`", $type);
 		}
