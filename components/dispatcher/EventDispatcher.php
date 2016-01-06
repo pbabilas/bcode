@@ -8,11 +8,9 @@ namespace app\components\dispatcher;
 
 
 use app\common\interfaces\SubscriberInterface;
-use app\module\page\models\Page;
 use Yii;
 use yii\base\Component;
 use yii\base\Event;
-use yii\db\BaseActiveRecord;
 
 class EventDispatcher extends Component
 {
@@ -106,7 +104,7 @@ class EventDispatcher extends Component
 	 *
 	 * @return string
 	 */
-	private function getSubscribersPAth()
+	private function getSubscribersPath()
 	{
 		return \Yii::$app->getBasePath() . EventDispatcher::SUBSCRIBERS_PATH;
 	}

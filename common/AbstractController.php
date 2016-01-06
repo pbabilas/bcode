@@ -29,13 +29,9 @@ class AbstractController extends Controller
 		{
 			foreach($fieldWithErrors as $error)
 			{
-				$message[] = $error;
-
+				$this->addMessage(null, $error, Message::ALERT);
 			}
 		}
-
-		$this->addMessage('page', join("<br />", $message), Message::ALERT);
-
 	}
 
 	/**
@@ -53,8 +49,7 @@ class AbstractController extends Controller
 		{
 			$message = new Message($message, $type);
 		}
-
-		Yii::$app->session->setFlash($message->getType(), $message->getContent());
+		Yii::$app->session->addFlash($message->getType(), $message->getContent());
 	}
 
 	/**

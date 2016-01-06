@@ -9,14 +9,14 @@ use app\module\language\models\Language;
 use app\module\user\models\User;
 use Yii;
 
-class DefaultAdminController extends AbstractAdminController
+class DashboardAdminController extends AbstractAdminController
 {
 	/**
 	 * @return mixed
 	 */
 	public function actionIndex()
 	{
-       	return $this->render('index.tpl');
+       	return $this->render('admin/index.tpl');
 	}
 
 }

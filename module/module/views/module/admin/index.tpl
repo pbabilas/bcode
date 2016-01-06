@@ -6,7 +6,12 @@
 <div class="col-md-12">
     <div class="box">
         <div class="box-header">
-            <h3 class="box-title">{Html::a('`module.install_module`', ['install'], ['class' => 'btn btn-primary'])}</h3>
+            <h3 class="box-title">{Html::a('`module.install_module`', 'admin/module/install', ['class' => 'btn btn-primary'])}</h3>
+
+            <div class="col-sm-4 pull-right">
+                <span class="badge bg-green">Aktualny</span>
+                <span class="badge bg-yellow">Posiada aktualizacje</span>
+            </div>
 
             <div class="box-tools">
                 <div class="input-group input-group-sm" style="width:150px;">
@@ -41,7 +46,11 @@
                             <td>`module.{$module->is_active|replace:1:'yes'|replace:0:'no'}`</td>
                             <td>`module.{$module->technical_user_only|replace:1:'yes'|replace:0:'no'}`</td>
                             <td>`module.{$module->admin_access|replace:1:'yes'|replace:0:'no'}`</td>
-                            <td>{$module->version}</td>
+                            <td>
+                                <span class="badge bg-{if $module->isActual()}green{else}yellow{/if}">
+                                    {$module->version}
+                                </span>
+                                </td>
                             <td>
                                 <a href="/admin/module/uninstall?id={$module->id}" class="glyphicon glyphicon-trash" aria-hidden="true" title="`module.delete_module`"></a>
                                 {if $module->isActual() == false}

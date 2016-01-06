@@ -5,18 +5,18 @@ $params = require(__DIR__ . '/params.php');
 $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
-    'bootstrap' => ['log', 'EventDispatcher'],
+    'bootstrap' => ['log', 'EventDispatcher', 'AdminRoutePlugin', 'DefaultModuleRoutePlugin'],
 	'language' => 'pl',
 	'layout' => 'main.tpl',
-	'defaultRoute' => 'page/default',
+	'defaultRoute' => 'index/index',
 	'modules' => [
 		'page' => [
 			'class' => 'app\module\page\Module',
-			'defaultRoute' => 'default',
+			'defaultRoute' => 'page/index',
 		],
 		'dashboard' => [
 			'class' => 'app\module\dashboard\Module',
-			'defaultRoute' => 'default/index',
+			'defaultRoute' => 'dashboard/index',
 		],
 		'calendar' => [
 				'class' => 'app\module\calendar\Module',
@@ -24,11 +24,11 @@ $config = [
 		],
 		'user' => [
 			'class' => 'app\module\user\Module',
-			'defaultRoute' => 'default/login',
+			'defaultRoute' => 'user/index',
 		],
 		'module' => [
 			'class' => 'app\module\module\Module',
-			'defaultRoute' => 'default/index',
+			'defaultRoute' => 'module/index',
 		],
 		'error' => [
 			'class' => 'app\module\error\Module',
@@ -82,6 +82,12 @@ $config = [
 		'EventDispatcher' => [
 			'class' => 'app\components\dispatcher\EventDispatcher',
 		],
+		'AdminRoutePlugin' => [
+			'class' => 'app\components\route\AdminPlugin',
+		],
+		'DefaultModuleRoutePlugin' => [
+			'class' => 'app\components\route\DefaultModulePlugin',
+		],
 		'i18n' => [
 			'translations' => [
 				'page' => [
@@ -112,15 +118,15 @@ $config = [
 			'showScriptName' => false,
 			'rules' => [
 
-				'admin' => 'dashboard/default-admin/',
-				'admin/<module:\w+>/<action:\w+>' => '<module>/default-admin/<action>',
-				'admin/<module:\w+>' => '<module>/default-admin/',
-				'<module:\w+>/<action:\w+>' => '<module>/default/<action>',
+//				'admin' => 'dashboard/default-admin/',
+//				'admin/<module:\w+>/<action:\w+>' => '<module>/default-admin/<action>',
+//				'admin/<module:\w+>' => '<module>/default-admin/',
+//				'<module:\w+>/<action:\w+>' => '<module>/default/<action>',
 //				'<module:\w+>' => '<module>/admin/',
 //				'<module:\w+>/<controller:\w+>-admin/<route:\w+>' => 'site/error',
 //				'<module:\w+>/<controller:\w+>-admin/' => 'site/error',
 //				'<module:\w+>/<controller:\w+>-admin' => 'site/error',
-				'pictures/<type:\w+>/<size:\w+>/<pictureFilename:.+?>.<extension:\w+>' => 'thumbnailer/create',
+				'pictures/<type:\w+>/<size:\w+>/<pictureFilename:.+?>.<extension:\w+>' => 'thumbnailer/create/index',
 			]
 
 		],

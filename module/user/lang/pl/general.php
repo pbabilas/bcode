@@ -8,9 +8,12 @@ return [
 	'update_user' => 'Aktualizuj konto',
 	'user' => 'Konta użytkowników',
 	'logged_as' => 'Jesteś zalogowany jako',
+	'action_login' => 'Zaloguj',
+	'login_info' => 'Zaloguj się do panelu',
 	'logout' => 'Wyloguj',
 	'create_user' => 'Nowe konto',
 	'edit' => 'Edytuj konto',
 	'login' => 'Nazwa konta',
-	'save' => 'Zapisz'
+	'save' => 'Zapisz',
+	'picture' => 'Awatar'
 ];

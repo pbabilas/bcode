@@ -13,7 +13,7 @@ use yii\web\NotFoundHttpException;
 use yii\web\UploadedFile;
 
 
-class DefaultAdminController extends AbstractAdminController
+class UserAdminController extends AbstractAdminController
 {
 
 	/**
@@ -28,7 +28,7 @@ class DefaultAdminController extends AbstractAdminController
 
 		$this->addBreadcrumb([$this->view->title]);
 
-		return $this->render('index.tpl', [
+		return $this->render('admin/index.tpl', [
 			'searchModel'  => $searchModel,
 			'dataProvider' => $dataProvider,
 		]);
@@ -73,7 +73,7 @@ class DefaultAdminController extends AbstractAdminController
 			$this->view->title
 		]);
 
-		return $this->render('create.tpl', [
+		return $this->render('admin/create.tpl', [
 			'user' => $user,
 		]);
 	}
@@ -102,16 +102,7 @@ class DefaultAdminController extends AbstractAdminController
 				$user->password = Yii::$app->getSecurity()->generatePasswordHash($data['password']);
 			}
 
-			$filename = $this->handleUploadedPicture();
-
-			if ($filename == false)
-			{
-				$user->addError('picture_filename', '`user.file_upload_failed`');
-			}
-			else
-			{
-				$user->picture_filename = $filename;
-			}
+			$this->handleUploadedPicture($user);
 
 			if ($user->save())
 			{
@@ -126,6 +117,7 @@ class DefaultAdminController extends AbstractAdminController
 					//delete auth
 				}
 
+				$this->addMessage('user', 'all_done');
 				return $this->redirect(['/admin/user']);
 			}
 
@@ -141,7 +133,7 @@ class DefaultAdminController extends AbstractAdminController
 			$this->view->title
 		]);
 
-		return $this->render('edit.tpl', [
+		return $this->render('admin/edit.tpl', [
 			'user' => $user,
 		]);
 	}
@@ -184,13 +176,24 @@ class DefaultAdminController extends AbstractAdminController
 	}
 
 	/**
-	 * @return bool|string filename
+	 * @param User $user
 	 */
-	private function handleUploadedPicture()
+	private function handleUploadedPicture(User $user)
 	{
 		$uploadedFile = UploadedFile::getInstanceByName('userPicture');
+		if (is_null($uploadedFile) == false)
+		{
+			$uploader = new Uploader(Constants::PICTURES_PATH . User::PICTURE_DIR, true);
+			$filename = $uploader->runforFile($uploadedFile);
 
-		$uploader = new Uploader(Constants::PICTURES_PATH . User::PICTURE_DIR, true);
-		return $uploader->runforFile($uploadedFile);
+			if ($filename == false)
+			{
+				$user->addError('picture_filename', '`user.file_upload_failed`');
+			}
+			else
+			{
+				$user->picture_filename = $filename;
+			}
+		}
 	}
 }

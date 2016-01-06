@@ -14,7 +14,7 @@ use yii\filters\VerbFilter;
 /**
  * PageAdminController implements the CRUD actions for Page model.
  */
-class DefaultAdminController extends AbstractAdminController
+class PageAdminController extends AbstractAdminController
 {
     public function behaviors()
     {
@@ -31,21 +31,12 @@ class DefaultAdminController extends AbstractAdminController
     public function actionIndex()
     {
 
-//		$sql = "SELECT symbol FROM language";
-//		$langs = \Yii::$app->getDb()->createCommand($sql)->queryAll(PDO::FETCH_COLUMN);
-//		$defaultLang = \Yii::$app->sourceLanguage;
-//
-//		unset( $langs[ array_search($defaultLang, $langs )] ); // now contains langs without defaultLang
-//
-//		var_dump($langs);
-//		die();
-
         $searchModel = new PageSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 		$this->view->title = '`page.pages`';
 		$this->addBreadcrumb([$this->view->title]);
 
-        return $this->render('index.tpl', [
+        return $this->render('admin/index.tpl', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
@@ -72,7 +63,7 @@ class DefaultAdminController extends AbstractAdminController
 			['label' => '`page.Pages`', 'url' => ['index']],
 			$this->view->title
 		]);
-		return $this->render('create.tpl', [
+		return $this->render('admin/create.tpl', [
 			'page' => $model,
 		]);
     }
@@ -100,7 +91,7 @@ class DefaultAdminController extends AbstractAdminController
 			['label' => '`page.Pages`', 'url' => ['index']],
 			$this->view->title
 		]);
-		return $this->render('edit.tpl', [
+		return $this->render('admin/edit.tpl', [
 			'page' => $model,
 		]);
 	}
@@ -130,7 +121,7 @@ class DefaultAdminController extends AbstractAdminController
 			]);
 
 			$this->addMessage('page', 'updated_successful', Message::INFO);
-			return $this->render('update.tpl', [
+			return $this->render('admin/update.tpl', [
 				'page' => $model,
 			]);
 		}

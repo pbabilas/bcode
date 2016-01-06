@@ -5,7 +5,7 @@
 <div class="col-xs-12">
 	<div class="box">
 		<div class="box-header">
-			<h3 class="box-title">{Html::a('`page.create_page`', ['create'], ['class' => 'btn btn-flat btn-primary'])}</h3>
+			<h3 class="box-title">{Html::a('`page.create_page`', 'admin/page/create', ['class' => 'btn btn-flat btn-primary'])}</h3>
 
 			<div class="box-tools">
 				<div class="input-group input-group-sm" style="width:150px;">
@@ -34,8 +34,8 @@
 							</a>
 						</td>
 						<td>
-							<a href="/admin/page/delete?id={$page->id}" class="glyphicon glyphicon-trash" aria-hidden="true" title="`page.delete_page`"></a>
 							<a href="/admin/page/edit?id={$page->id}" class="glyphicon glyphicon-edit" aria-hidden="true" title="`page.edit`"></a>
+							<a href="/admin/page/delete?id={$page->id}" class="glyphicon glyphicon-trash" aria-hidden="true" title="`page.delete_page`"></a>
 						</td>
 					</tr>
 				{/foreach}

@@ -16,17 +16,30 @@ use yii\web\NotFoundHttpException;
 abstract class AbstractAdminController extends AbstractController
 {
 
+	/** @var array  */
 	public $menuItems = [];
+	/** @var null  */
 	public $currentModule = null;
+
+	public static $allowedControllerAction = [
+		'user' => [
+			'login',
+			'index'
+		]
+	];
 
 	public function init()
 	{
-		$checkAuth = $this->module != 'user' && $this->action != 'login';
-		if (\Yii::$app->user->isGuest && $checkAuth)
+//		$checkAuth = $this->module->id != 'user' && $this->action == 'login';
+//		var_dump($this->module->id != 'user');
+//		var_dump(!$this->action);
+//		die();
+
+		if (\Yii::$app->user->isGuest)
 		{
 			\Yii::$app->user->setReturnUrl(\Yii::$app->request->url);
 			$this->addMessage('user', 'restricted_area', Message::ALERT);
-			$this->redirect('/admin/user/login');
+			$this->redirect('/admin/user/auth/login');
 			return false;
 		}
 
@@ -65,7 +78,7 @@ abstract class AbstractAdminController extends AbstractController
 		$moduleName = $this->module->id;
 		/** @var Module $module */
 		$module = Module::findOne(['name' => $moduleName]);
-		$this->checkAdminAccess($module);
+//		$this->checkAdminAccess($module);
 
 		$this->currentModule = $module;
 

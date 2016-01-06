@@ -45,9 +45,29 @@
                 <ul class="nav navbar-nav">
                     <!-- User Account: style can be found in dropdown.less -->
                     <li class="dropdown user user-menu">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <span class="hidden-xs">`user.logged_as` {\Yii::$app->user->identity->name}</span>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                            {$user = \Yii::$app->user->identity}
+                            <img src="{$user->getPictureUrl($user->picture_filename, '25x25')}" class="user-image" alt="User Image">
+                            <span class="hidden-xs">`user.logged_as` {$user->name}</span>
                         </a>
+                        <ul class="dropdown-menu">
+                            <!-- User image -->
+                            <li class="user-header">
+                                <img src="{$user->getPictureUrl($user->picture_filename, '90x90')}" class="img-circle" alt="User Image">
+                                <p>
+                                    {$user->name}
+                                </p>
+                            </li>
+                            <!-- Menu Footer-->
+                            <li class="user-footer">
+                                <div class="pull-left">
+                                    <a href="#" class="btn btn-default btn-flat">`user.profile`</a>
+                                </div>
+                                <div class="pull-right">
+                                    <a href="admin/user/auth/logout" class="btn btn-default btn-flat">`user.logout`</a>
+                                </div>
+                            </li>
+                        </ul>
                     </li>
                     <li>
                         <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
@@ -128,17 +148,22 @@
         <div class="content">
 
         {if Yii::$app->session->hasFlash('alert')}
-            <div class="alert alert-danger alert-dismissible">
-                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                <i class="icon fa fa-ban"></i> {Yii::$app->session->getFlash('alert')|replace:'\n':'<br />'}
-            </div>
+            {foreach Yii::$app->session->getFlash('alert') as $message}
+                <div class="alert alert-danger alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    <i class="icon fa fa-ban"></i> {$message|replace:'\n':'<br />'}
+                </div>
+            {/foreach}
         {/if}
         {if Yii::$app->session->hasFlash('info')}
-            <div class="alert alert-info alert-dismissible">
-                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                <i class="icon fa fa-info"></i> {Yii::$app->session->getFlash('info')|replace:'\n':'<br />'}
-            </div>
+            {foreach Yii::$app->session->getFlash('info') as $message}
+                <div class="alert alert-info alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    <i class="icon fa fa-info"></i> {$message|replace:'\n':'<br />'}
+                </div>
+            {/foreach}
         {/if}
+
         {$content}
         </div>
     </div>

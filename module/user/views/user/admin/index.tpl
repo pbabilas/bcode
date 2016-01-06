@@ -5,7 +5,7 @@
 <div class="col-xs-12">
     <div class="box">
         <div class="box-header">
-            <h3 class="box-title">{Html::a('`user.create_user`', ['create'], ['class' => 'btn btn-flat btn-primary'])}</h3>
+            <h3 class="box-title">{Html::a('`user.create_user`', 'admin/user/create', ['class' => 'btn btn-flat btn-primary'])}</h3>
 
             <div class="box-tools">
                 <div class="input-group input-group-sm" style="width:150px;">
@@ -25,6 +25,7 @@
                     <th>`user.picture`</th>
                     <th>`user.login`</th>
                     <th>`user.email`</th>
+                    <th></th>
                 </tr>
                 {foreach $dataProvider->getModels() as $i => $user}
                     <tr>

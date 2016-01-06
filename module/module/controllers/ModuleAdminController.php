@@ -17,17 +17,11 @@ use yii\filters\VerbFilter;
  * @user: Pawel Babilas
  * @date: 15.12.2015
  */
-class DefaultAdminController extends AbstractAdminController
+class ModuleAdminController extends AbstractAdminController
 {
 	public function behaviors()
 	{
 		return [
-//			'verbs' => [
-//				'class' => VerbFilter::className(),
-//				'actions' => [
-//					'do-install' => ['post'],
-//				],
-//			],
 		];
 	}
 
@@ -38,7 +32,7 @@ class DefaultAdminController extends AbstractAdminController
 		$this->view->title = '`module.modules`';
 		$this->addBreadcrumb([$this->view->title]);
 
-		return $this->render('index.tpl', [
+		return $this->render('admin/index.tpl', [
 			'modules' => $modules,
 		]);
 	}
@@ -47,7 +41,7 @@ class DefaultAdminController extends AbstractAdminController
 	{
 		$moduleFinder = new Finder();
 
-		return $this->render('install.tpl', [
+		return $this->render('admin/install.tpl', [
 			'moduleFinder' => $moduleFinder,
 			'module'       => new Module()
 		]);
@@ -74,7 +68,7 @@ class DefaultAdminController extends AbstractAdminController
 
 			$moduleFinder = new Finder();
 
-			return $this->render('install.tpl', [
+			return $this->render('admin/install.tpl', [
 				'moduleFinder' => $moduleFinder,
 				'module' => $e->getModule()
 			]);

@@ -13,7 +13,7 @@ use yii\filters\VerbFilter;
 /**
  * UserController implements the CRUD actions for User model.
  */
-class DefaultAdminController extends AbstractAdminController
+class AuthAdminController extends AbstractAdminController
 {
 	public function behaviors()
 	{
@@ -49,7 +49,7 @@ class DefaultAdminController extends AbstractAdminController
 			$this->addMessage('user', 'logout_succesfull', Message::INFO);
 		}
 
-		return $this->redirect('/user/login');
+		return $this->redirect('/admin/user/auth/login');
     }
 
     public function actionLogin()
@@ -73,7 +73,7 @@ class DefaultAdminController extends AbstractAdminController
 			$this->addMessage('user', 'wrong_data_given', Message::ALERT);
 		}
 
-		return $this->render('login.tpl', [
+		return $this->render('admin/login.tpl', [
 			'user' => $userCandidate,
 		]);
 

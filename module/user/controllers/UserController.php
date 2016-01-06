@@ -9,10 +9,10 @@ namespace app\module\user\controllers;
 
 use app\common\AbstractController;
 
-class Controller extends AbstractController
+class UserController extends AbstractController
 {
 
-	public function actionLogin()
+	public function actionIndex()
 	{
 		die('dziala!');
 	}
