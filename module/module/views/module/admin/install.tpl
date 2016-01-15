@@ -1,6 +1,7 @@
 {use class="yii\helpers\Html"}
 {use class="yii\widgets\ActiveForm"}
 {use class="app\decorator\HTMLDecorator"}
+{use class="app\module\module\Models\Category"}
 
 <div class="row">
     <div class="col-md-12">
@@ -26,6 +27,16 @@
                         <label class="control-label" for="module-long_nale">`module.long_name`</label>
                         {HTMLDecorator::multiLangInput($module, 'text', 'long_name', ['class' => 'form-control', 'id' => 'module-long_name', 'max-length' => '100'])}
                         <div class="help-block"></div>
+                    </div>
+
+                    <div class="form-group field-module-category_id">
+                        <label class="control-label" for="module-category_id">`module.category`</label>
+                        <select name="Module[category_id]" class="form-control">
+                            <option value="0">`module.select_one`</option>
+                            {foreach Category::find()->all() as $category}
+                                <option value="{$category->id}">{$category->name}</option>
+                            {/foreach}
+                        </select>
                     </div>
 
                     <div class="checkbox">

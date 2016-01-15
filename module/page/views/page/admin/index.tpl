@@ -1,34 +1,34 @@
 {use class="yii\helpers\Html"}
 {use class="yii\grid\GridView"}
 {use class="app\helper\UrlHelper"}
+{use class="yii\widgets\LinkPager"}
 
-<div class="col-xs-12">
 	<div class="box">
 		<div class="box-header">
 			<h3 class="box-title">{Html::a('`page.create_page`', 'admin/page/create', ['class' => 'btn btn-flat btn-primary'])}</h3>
 
 			<div class="box-tools">
-				<div class="input-group input-group-sm" style="width:150px;">
-					<input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
+				<form method="post">
+					<div class="input-group input-group-sm" style="width:150px;">
+						<input type="text" name="Page[title__pl]" class="form-control pull-right" placeholder="Search">
 
-					<div class="input-group-btn">
-						<button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+						<div class="input-group-btn">
+							<button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+						</div>
 					</div>
-				</div>
+				</form>
 			</div>
 		</div>
 		<!-- /.box-header -->
 		<div class="box-body table-responsive no-padding">
 			<table class="table table-hover">
 				<tbody><tr>
-					<th>#</th>
 					<th>`page.title`</th>
 					<td>`page.created_at`</td>
 					<th>`page.options`</th>
 				</tr>
-				{foreach $dataProvider->getModels() as $i => $page}
+				{foreach $search->findAll() as $i => $page}
 					<tr>
-						<td>{$i+1}</td>
 						<td>
 							<a href="{UrlHelper::niceUrlTo($page)}">
 								{$page->title}
@@ -43,9 +43,15 @@
 						</td>
 					</tr>
 				{/foreach}
-				</tbody></table>
+				</tbody>
+			</table>
+			<div class="col-md-7 col-md-offset-5">
+				{LinkPager::widget([
+				'pagination' => $search->getPaginator()
+				])}
+			</div>
 		</div>
+
 		<!-- /.box-body -->
 	</div>
 	<!-- /.box -->
-</div>

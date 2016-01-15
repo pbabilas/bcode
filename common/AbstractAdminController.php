@@ -8,14 +8,13 @@
 
 namespace app\common;
 
-
 use app\module\module\models\Module;
+use app\module\module\models\ModuleQuery;
 use Yii;
 use yii\web\NotFoundHttpException;
 
 abstract class AbstractAdminController extends AbstractController
 {
-
 	/** @var array  */
 	public $menuItems = [];
 	/** @var Module  */
@@ -23,21 +22,23 @@ abstract class AbstractAdminController extends AbstractController
 
 	public static $allowedControllerAction = [
 		'user' => [
-			'login',
-			'index'
+			'auth' => [
+				'login',
+				'index'
+			]
 		]
 	];
 
 	public function init()
 	{
-
 		$moduleName = $this->module->id;
 		/** @var Module $module */
 		$this->currentModule = Module::findOne(['name' => $moduleName]);
-//		$checkAuth = $this->module->id != 'user' && $this->action == 'login';
-//		var_dump($this->module->id != 'user');
-//		var_dump(!$this->action);
-//		die();
+
+		if ($this->needAuthentication() == false)
+		{
+			return true;
+		}
 
 		if (\Yii::$app->user->isGuest)
 		{
@@ -48,42 +49,19 @@ abstract class AbstractAdminController extends AbstractController
 		}
 
 		$this->checkModuleAccess();
+		$this->checkAdminAccess();
 
-		$menuItems = Module::find()->all();
 		/** @var Module $menuItem */
-		foreach($menuItems as $menuItem)
+		foreach(ModuleQuery::findAllOrdered() as $menuItem)
 		{
 			if ($this->hasAdminController($menuItem->name))
 			{
-				$this->menuItems[] = $menuItem;
+				$category = $menuItem->getCategory();
+				$this->menuItems[$category->name][] = $menuItem;
 			}
 		}
 
-//		foreach($menuItems as $menuItem)
-//		{
-//			if ($this->hasAdminController($menuItem->name))
-//			{
-//				if ($menuItem->icon != '')
-//				{
-//					$value['icon'] = $menuItem->icon;
-//					$value['url'] = '/admin/'.$menuItem->name;
-//				}
-//				else
-//				{
-//					$value = '/admin/'.$menuItem->name;
-//				}
-//				$this->menuItems[$menuItem->long_name] = $value;
-//			}
-//		}
-
 		\Yii::$app->layout = 'admin.tpl';
-	}
-
-	public function beforeAction($action)
-	{
-		$this->checkAdminAccess();
-
-		return true;
 	}
 
 	/**
@@ -112,11 +90,11 @@ abstract class AbstractAdminController extends AbstractController
 				throw new NotFoundHttpException('You are not authorized to access this area');
 			}
 		}
-
 	}
 
 	/**
 	 * @param $moduleId
+	 *
 	 * @return bool
 	 */
 	private function hasAdminController($moduleId)
@@ -126,6 +104,39 @@ abstract class AbstractAdminController extends AbstractController
 		{
 			return false;
 		}
-		return !empty(glob($module->getControllerPath().'/*AdminController.php'));
+
+		/** @var string $file */
+		foreach(glob($module->getControllerPath().'/*AdminController.php') as $file)
+		{
+			$className = basename($file, '.php');
+			$reflectionClass = new \ReflectionClass($module->controllerNamespace . '\\' . $className);
+
+			if($reflectionClass->isSubclassOf('app\common\AbstractController'))
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * @return bool
+	 */
+	private function needAuthentication()
+	{
+		if (isset(AbstractAdminController::$allowedControllerAction[$this->module->id]) == false)
+		{
+			return true;
+		}
+
+		$unauthorizedModuleControllers = AbstractAdminController::$allowedControllerAction[$this->module->id];
+
+		if (isset($unauthorizedModuleControllers[$this->id]) == false)
+		{
+			return true;
+		}
+
+		return false;
 	}
 }

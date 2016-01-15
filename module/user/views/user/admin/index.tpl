@@ -2,7 +2,6 @@
 {use class="yii\grid\GridView"}
 
 
-<div class="col-xs-12">
     <div class="box">
         <div class="box-header">
             <h3 class="box-title">{Html::a('`user.create_user`', 'admin/user/create', ['class' => 'btn btn-flat btn-primary'])}</h3>
@@ -28,7 +27,7 @@
                 {foreach $dataProvider->getModels() as $i => $user}
                     <tr>
                         <td>
-                            <img src="{$user->getPictureUrl($user->picture_filename, '32x32')}" class="user-image" />
+                            <img src="{$user->getPictureUrl($user->picture_filename, '32x32')}" class="img-circle" />
                             {$user->name}
                         </td>
                         <td>{$user->email}</td>
@@ -43,4 +42,3 @@
         <!-- /.box-body -->
     </div>
     <!-- /.box -->
-</div>

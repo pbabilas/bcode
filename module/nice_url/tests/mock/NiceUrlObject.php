@@ -87,4 +87,12 @@ class NiceUrlObject extends AbstractMultiLangModel
 
 		return false;
 	}
+
+	/**
+	 * @return string
+	 */
+	public function getNiceUrlControllerId()
+	{
+		return 'test';
+	}
 }

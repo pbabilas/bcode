@@ -108,9 +108,11 @@
 
                 <!-- sidebar menu: : style can be found in sidebar.less -->
                 <ul class="nav sidebar-menu">
-                    <li class="header">MODUŁY</li>
-                    {foreach \Yii::$app->controller->menuItems as $item}
-                        <li><a href="/admin/{$item->name}"><i class="fa fa-{$item->icon}"></i> <span>{$item->long_name__pl}</span></a></li>
+                    {foreach \Yii::$app->controller->menuItems as $categoryName => $items}
+                        <li class="header">{$categoryName}</li>
+                        {foreach $items as $item}
+                            <li><a href="/admin/{$item->name}"><i class="fa fa-{$item->icon}"></i> <span>{$item->long_name__pl}</span></a></li>
+                        {/foreach}
                     {/foreach}
 
                 </ul>

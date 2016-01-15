@@ -42,7 +42,7 @@ class Searcher
 	{
 		foreach ($params as $col => $value)
 		{
-			$this->query->orWhere([$col => $value]);
+			$this->query->andWhere(['like', $col, [$value]]);
 			$this->countQuery->orWhere([$col => $value]);
 		}
 	}

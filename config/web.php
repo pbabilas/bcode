@@ -35,10 +35,6 @@ $config = [
 			'class' => 'app\module\module\Module',
 			'defaultRoute' => 'module/index',
 		],
-		'error' => [
-			'class' => 'app\module\error\Module',
-			'defaultRoute' => 'default/error',
-		],
 		'thumbnailer' => [
 			'class' => 'app\module\thumbnailer\Module',
 			'defaultRoute' => 'default/create',

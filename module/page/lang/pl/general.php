@@ -16,5 +16,6 @@ return [
 	'options' => 'Opcje',
 	'edit' => 'Edytuj',
 	'delete_page' => 'Usuń',
-	'updated_successful' => 'Strona zaktualizowana'
+	'updated_successful' => 'Strona zaktualizowana',
+	'new_created' => 'Strona utworzona',
 ];

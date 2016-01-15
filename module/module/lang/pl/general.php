@@ -13,5 +13,7 @@ return [
 	'is_active' => 'Aktywny',
 	'technical_user' => 'Techniczny',
 	'version' => 'Wersja',
-	'options' => 'Opcje'
+	'options' => 'Opcje',
+	'select_one' => 'Wybierz kategorię',
+	'category' => 'Kategoria'
 ];

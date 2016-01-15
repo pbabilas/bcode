@@ -4,6 +4,7 @@ namespace app\module\page\controllers;
 
 use app\common\AbstractAdminController;
 use app\common\Message;
+use app\common\model\Searcher;
 use PDO;
 use Yii;
 use app\module\page\models\Page;
@@ -28,17 +29,18 @@ class PageAdminController extends AbstractAdminController
         ];
     }
 
-    public function actionIndex()
+    public function actionIndex($page = 1)
     {
+		$search = new Searcher(new Page());
+		$search->setPage($page);
+		$params = \Yii::$app->getRequest()->post('Page');
+		$search->setParams((array) $params);
 
-        $searchModel = new PageSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 		$this->view->title = '`page.pages`';
 		$this->addBreadcrumb([$this->view->title]);
 
         return $this->render('admin/index.tpl', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
+            'search' => $search,
         ]);
     }
 
@@ -52,6 +54,7 @@ class PageAdminController extends AbstractAdminController
 
 			if ($model->save())
 			{
+				$this->addMessage('page', 'new_created');
 				return $this->redirect('page');
 			}
 
@@ -145,7 +148,7 @@ class PageAdminController extends AbstractAdminController
 			$this->addMessage('page', 'not_found', Message::ALERT);
 		}
 
-        return $this->redirect('admin/page/');
+        return $this->redirect('/admin/page/');
     }
 
     /**

@@ -26,4 +26,12 @@ $(document).ready(function()
 
     $('.wysiwyg').wysihtml5();
     $().modal();
+
+    $('body').on('click', '.glyphicon-trash', function()
+    {
+        if (!confirm('Potwierdź usunięcie'))
+        {
+            return false;
+        }
+    });
 });

@@ -3,14 +3,13 @@
 {use class="yii\widgets\LinkPager"}
 
 
-<div class="col-md-12">
     <div class="box">
         <div class="box-header">
             <h3 class="box-title">{Html::a('`module.install_module`', 'admin/module/install', ['class' => 'btn btn-primary'])}</h3>
 
             <div class="col-sm-4 pull-right">
                 <span class="badge bg-green">Aktualny</span>
-                <span class="badge bg-yellow">Posiada aktualizacje</span>
+                <span class="badge bg-red">Posiada aktualizacje</span>
             </div>
 
             <div class="box-tools">
@@ -39,13 +38,13 @@
                 <tbody>
                 {foreach $searcher->findAll() as $i => $module}
                     {$i++|void}
-                    <tr>
+                    <tr{if $module->isActual() == false} class="bg-red"{/if}>
                         <td>{$module->long_name}</td>
                         <td>`module.{$module->is_active|replace:1:'yes'|replace:0:'no'}`</td>
                         <td>`module.{$module->technical_user_only|replace:1:'yes'|replace:0:'no'}`</td>
                         <td>`module.{$module->admin_access|replace:1:'yes'|replace:0:'no'}`</td>
                         <td>
-                                <span class="badge bg-{if $module->isActual()}green{else}yellow{/if}">
+                                <span class="badge bg-{if $module->isActual()}green{else}red{/if}">
                                     {$module->version}
                                 </span>
                         </td>
@@ -72,4 +71,3 @@
         <!-- /.box-body -->
     </div>
     <!-- /.box -->
-</div>

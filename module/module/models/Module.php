@@ -20,6 +20,8 @@ use Yii;
  * @property integer technical_user_only
  * @property integer admin_access
  * @property string $icon
+ * @property integer $category_id
+ * @property integer $ordering
  */
 class Module extends AbstractMultiLangModel
 {
@@ -43,8 +45,8 @@ class Module extends AbstractMultiLangModel
 	{
 		return [
 			LanguageFieldFactory::process('long_name', ['required']),
-			[['name', 'is_active'], 'required'],
-			[['is_active', 'version', 'technical_user_only', 'admin_access'], 'integer'],
+			[['name', 'is_active', 'category_id', 'ordering'], 'required'],
+			[['is_active', 'version', 'technical_user_only', 'admin_access', 'category_id', 'ordering'], 'integer'],
 			LanguageFieldFactory::process('long_name', ['string', 'max' => 255]),
 			[['name'], 'string', 'max' => 255],
 			[['icon'], 'string', 'max' => 32],
@@ -124,4 +126,13 @@ class Module extends AbstractMultiLangModel
 
 		throw new ModuleInstallatorNotFound($this->name);
 	}
+
+	/**
+	 * @return Category|null
+	 */
+	public function getCategory()
+	{
+		return $this->hasOne(Category::className(), ['id' => 'category_id'])->one();
+	}
+
 }

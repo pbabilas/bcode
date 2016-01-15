@@ -8,6 +8,8 @@
 
 namespace app\module\page\controllers;
 
+use app\class_map\dependency\SubclassOf;
+use app\class_map\generator\Generator;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 
@@ -27,7 +29,11 @@ class PageController extends Controller
 
 	public function actionIndex()
 	{
-		die('udało się page');
+		$generator = new Generator();
+		$generator->setDependency(new SubclassOf('app\common\interfaces\SubscriberInterface'));
+		$generator->run(\Yii::$app->getBasePath().'/module');
+		$generator->saveTo(\Yii::$app->getBasePath().'/runtime/class_map.php');
+		die('done');
 	}
 
 	public function actionShow($id)

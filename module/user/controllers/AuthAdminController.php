@@ -30,6 +30,7 @@ class AuthAdminController extends AbstractAdminController
 	public function init()
 	{
 		Yii::$app->layout = 'login.tpl';
+		parent::init();
 	}
 
 	/**
