@@ -66,7 +66,7 @@ function doComposerUpdate()
 function doSubscriberClassMapUpdate()
 {
 	echo '<h3>Subscriber ClassMap generator running</h3>';
-	$generator = new Generator()
+	$generator = new Generator();
 	$generator->setDependency(new SubclassOf('app\common\interfaces\SubscriberInterface'));
 	$generator->run(\Yii::$app->getBasePath().'/module');
 	if ($generator->saveTo(\Yii::$app->getBasePath().'/runtime/class_map.php'))

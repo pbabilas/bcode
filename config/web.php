@@ -13,7 +13,7 @@ $config = [
 	],
 	'language' => 'pl',
 	'layout' => 'main.tpl',
-	'defaultRoute' => 'page/page/index',
+	'defaultRoute' => 'index/index/index',
 	'modules' => [
 		'page' => [
 			'class' => 'app\module\page\Module',
@@ -35,6 +35,10 @@ $config = [
 			'class' => 'app\module\module\Module',
 			'defaultRoute' => 'module/index',
 		],
+		'index' => [
+			'class' => 'app\module\index\Module',
+			'defaultRoute' => 'index/index',
+		],
 		'thumbnailer' => [
 			'class' => 'app\module\thumbnailer\Module',
 			'defaultRoute' => 'default/create',
@@ -45,7 +49,7 @@ $config = [
 			'class' => 'app\assets\BootstrapAsset',
 		],
 		'authManager' => [
-			'class' => 'yii\rbac\PhpManager', // or use 'yii\rbac\DbManager'
+			'class' => 'yii\rbac\DbManager', // or use 'yii\rbac\DbManager'
 		],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation

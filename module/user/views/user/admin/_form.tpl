@@ -27,18 +27,22 @@
     </div>
 
     <div class="form-group">
-        <div class="pull-left">
-            <img src="{$user->getPictureUrl($user->picture_filename, '100x100')}" class="img-circle" />
-        </div>
-        <div class="pull-left col-lg-offset-1">
+        {if $user->picture_filename != ''}
+            <div class="pull-left">
+                <img src="{$user->getPictureUrl($user->picture_filename, '100x100')}" class="img-circle" />
+            </div>
+        {/if}
+        <div class="pull-left{if $user->picture_filename != ''} col-lg-offset-1{/if}">
             <label for="exampleInputFile">`user.picture`</label>
             <input type="file" id="picture" name="userPicture">
-            <p class="help-block">
-                <label for="exampleInputFile">
-                    {Html::checkbox('userPictureDelete', false, ['id' => 'user-picture-delete'])}
-                    `user.picture-delete`
-                </label>
-            </p>
+            {if $user->picture_filename != ''}
+                <p class="help-block">
+                    <label for="exampleInputFile">
+                        {Html::checkbox('userPictureDelete', false, ['id' => 'user-picture-delete'])}
+                        `user.picture-delete`
+                    </label>
+                </p>
+            {/if}
         </div>
 
     </div>

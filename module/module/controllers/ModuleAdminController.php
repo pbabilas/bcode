@@ -33,7 +33,6 @@ class ModuleAdminController extends AbstractAdminController
 		$params = \Yii::$app->getRequest()->post('Module');
 		$search->setParams((array) $params);
 
-		$this->view->title = '`module.modules`';
 		$this->addBreadcrumb([$this->view->title]);
 
 		return $this->render('admin/index.tpl', [
