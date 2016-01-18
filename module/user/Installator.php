@@ -19,7 +19,8 @@ class Installator extends AbstractInstallator
 	{
 		return [
 			1 => 'init',
-			2 => 'addUserPic'
+			2 => 'addUserPic',
+			3 => 'addUserRoles'
 		];
 	}
 
@@ -30,7 +31,8 @@ class Installator extends AbstractInstallator
 	{
 		return [
 			1 => 'dopTable',
-			2 => 'dropUserPic'
+			2 => 'dropUserPic',
+			3 => 'dropUserRoles'
 		];
 	}
 
@@ -69,5 +71,25 @@ class Installator extends AbstractInstallator
 		$sql2 = "ALTER TABLE `user` DROP INDEX `picture_filename`";
 		$this->db->createCommand($sql)->execute();
 		$this->db->createCommand($sql2)->execute();
+	}
+
+	public function addUserRoles()
+	{
+		$auth = \Yii::$app->getAuthManager();
+		$admin = $auth->createRole('admin');
+		$other = $auth->createRole('other');
+
+		$auth->add($admin);
+		$auth->add($other);
+	}
+
+	public function dropUserRoles()
+	{
+		$auth = \Yii::$app->getAuthManager();
+		$admin = $auth->getRole('admin');
+		$other = $auth->getRole('other');
+
+		$auth->remove($admin);
+		$auth->remove($other);
 	}
 }

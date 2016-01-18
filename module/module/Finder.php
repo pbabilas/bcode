@@ -47,4 +47,17 @@ class Finder
 	{
 		return $this->modules;
 	}
+
+	/**
+	 * @return array
+	 */
+	public function getAllSystemModules()
+	{
+		$modules = $this->modules;
+
+		unset($modules['debug']);
+		unset($modules['gii']);
+
+		return $modules;
+	}
 }

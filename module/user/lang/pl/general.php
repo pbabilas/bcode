@@ -15,5 +15,6 @@ return [
 	'edit' => 'Edytuj konto',
 	'login' => 'Nazwa konta',
 	'save' => 'Zapisz',
-	'picture' => 'Awatar'
+	'picture' => 'Awatar',
+	'group' => 'Grupy'
 ];

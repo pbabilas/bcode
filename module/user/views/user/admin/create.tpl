@@ -9,7 +9,9 @@
             </div>
 
             {$this->render('_form.tpl', [
-                'user' => $user
+                'user' => $user,
+                'roles' => $roles,
+                'finder' => $finder
             ]) }
         </div>
     </div>

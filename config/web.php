@@ -109,6 +109,13 @@ $config = [
 						'user' =>'general.php'
 					]
 				],
+				'group' => [
+					'class' => 'yii\i18n\PhpMessageSource',
+					'basePath' => "@app/module/user/lang",
+					'fileMap' => [
+						'user' =>'group.php'
+					]
+				],
 				'module' => [
 					'class' => 'yii\i18n\PhpMessageSource',
 					'basePath' => "@app/module/module/lang",

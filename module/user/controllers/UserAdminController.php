@@ -4,17 +4,21 @@ namespace app\module\user\controllers;
 
 use app\common\AbstractAdminController;
 use app\common\Message;
+use app\module\module\Finder;
 use app\module\thumbnailer\Constants;
 use app\module\thumbnailer\picture\Uploader;
 use app\module\user\models\User;
 use app\module\user\models\UserSearch;
 use Yii;
+use yii\db\IntegrityException;
 use yii\web\NotFoundHttpException;
 use yii\web\UploadedFile;
 
 
 class UserAdminController extends AbstractAdminController
 {
+
+	const MENU_NAME = 'Konta';
 
 	/**
 	 * @return mixed
@@ -45,21 +49,11 @@ class UserAdminController extends AbstractAdminController
 			$user->setAuthKey();
 			$user->password = Yii::$app->getSecurity()->generatePasswordHash($user->password);
 
-			if ($user->picture_filename = $this->handleUploadedPicture() == false)
-			{
-				$user->addError('picture_filename', '`user.file_upload_failed`');
-			}
+			$this->handleUploadedPicture($user);
 
 			if ($user->save())
 			{
-				if (Yii::$app->request->post('technical_user'))
-				{
-					$auth = Yii::$app->getAuthManager();
-					$role = $auth->getRole('accessModule');
-					$auth->assign($role, $user->getId());
-				}
-
-				return $this->redirect(['/admin/user']);
+				return $this->redirect('/admin/user');
 			}
 
 			$user->password = '';
@@ -75,11 +69,14 @@ class UserAdminController extends AbstractAdminController
 
 		return $this->render('admin/create.tpl', [
 			'user' => $user,
+			'roles' => Yii::$app->getAuthManager()->getRolesByUser($user->id),
+			'finder' => new Finder()
 		]);
 	}
 
 	public function actionEdit($id)
 	{
+
 		/** @var User $user */
 		$user = User::findOne(['id' => $id]);
 
@@ -90,6 +87,7 @@ class UserAdminController extends AbstractAdminController
 
 		if (Yii::$app->request->isPost)
 		{
+			$transaction = Yii::$app->getDb()->beginTransaction();
 			$data = Yii::$app->request->post('User');
 
 			$user->name = $data['name'];
@@ -106,21 +104,20 @@ class UserAdminController extends AbstractAdminController
 
 			if ($user->save())
 			{
+				$transaction->commit();
 				$auth = Yii::$app->getAuthManager();
-				if (Yii::$app->request->post('technical_user'))
-				{
-					$role = $auth->getRole('accessModule');
-					$auth->assign($role, $user->getId());
-				}
-				else
-				{
-					//delete auth
-				}
+				$role = $auth->getRole(
+					Yii::$app->request->post('Role')
+				);
+
+				$auth->revokeAll($user->id);
+				$auth->assign($role, $user->id);
 
 				$this->addMessage('user', 'all_done');
-				return $this->redirect(['/admin/user']);
+				return $this->redirect('/admin/user');
 			}
 
+			$transaction->rollBack();
 			$this->addErrorMessagesFromModel($user);
 		}
 
@@ -135,6 +132,8 @@ class UserAdminController extends AbstractAdminController
 
 		return $this->render('admin/edit.tpl', [
 			'user' => $user,
+			'roles' => Yii::$app->getAuthManager()->getRolesByUser($user->id),
+			'finder' => new Finder()
 		]);
 	}
 

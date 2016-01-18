@@ -83,12 +83,34 @@
             <aside class="main-sidebar">
                 <!-- sidebar: style can be found in sidebar.less -->
                 <div class="slimScrollDiv"><div class="sidebar" id="scrollspy">
+                        {$controllerName = Yii::$app->controller->id}
+                        {$moduleName = Yii::$app->controller->module->id}
                     <!-- sidebar menu: : style can be found in sidebar.less -->
                     <ul class="nav sidebar-menu">
                         {foreach Yii::$app->controller->menuItems as $categoryName => $items}
                             <li class="header">{$categoryName}</li>
                             {foreach $items as $item}
-                                <li><a href="/admin/{$item->name}"><i class="fa fa-{$item->icon}"></i> <span>{$item->long_name__pl}</span></a></li>
+                                {if $controllers = $item->getAdminControllers()}
+                                    {if count($controllers) > 1}
+                                        {$isActive = $moduleName == $item->name}
+                                        <li class="treeview {if $isActive}active{/if}">
+                                            <a href="#">
+                                                <i class="fa fa-{$item->icon}"></i> <span>{$item->long_name__pl}</span>
+                                                <i class="fa fa-angle-left pull-right"></i>
+                                            </a>
+
+                                            <ul class="treeview-menu">
+                                                {foreach $controllers as $controller}
+                                                    {$isActive = $moduleName == $item->name && $controllerName == $controller}
+                                                    <li {if $isActive}class="active"{/if}><a href="/admin/{$item->name}/{$controller}"><i class="fa fa-circle-o"></i> `{$item->name}.{$controller}`</a></li>
+                                                {/foreach}
+                                            </ul>
+                                        </li>
+                                    {else}
+                                        {$isActive = $moduleName == $item->name}
+                                        <li {if $isActive}class="active"{/if}><a href="/admin/{$item->name}"><i class="fa fa-{$item->icon}"></i> <span>{$item->long_name__pl}</span></a></li>
+                                    {/if}
+                                {/if}
                             {/foreach}
                         {/foreach}
                     </ul>

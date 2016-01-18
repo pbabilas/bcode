@@ -1,6 +1,7 @@
 {use class="yii\helpers\Html"}
 {use class="yii\widgets\ActiveForm"}
 {use class="app\decorator\HTMLDecorator"}
+{use class="app\module\user\models\Group"}
 
 <!-- /.box-header -->
 <!-- form start -->
@@ -18,12 +19,19 @@
         <label for="page-body">`user.password`</label>
         {Html::input('password', 'User[password]', $user->password, ['class' => 'form-control', 'id' => 'user-name', 'max-length' => '100'])}
     </div>
-    <div class="checkbox">
-        <label for="page-body">
-            {$roles = Yii::$app->getAuthManager()->getRolesByUser($user->id)}
-            {Html::checkbox('technical_user', array_key_exists('accessModule', $roles), ['id' => 'technical-user'])}
-            `user.technical`
-        </label>
+    <div class="form-group">
+        <label for="user-role">`user.role`</label>
+            {$roles = Group::findAll()}
+            {$roleArray = Yii::$app->getAuthManager()->getRolesByUser($user->id)}
+            {$role = key($roleArray)}
+            <select id="user-role" name="Role" class="form-control">
+                {foreach $roles as $r}
+                    <option value="{$r->name}"{if $r->name == $role} selected="selected"{/if}>
+                        {$r->name}{if $r->description != ''} ({$r->description}){/if}
+                    </option>
+                {/foreach}
+            </select>
+
     </div>
 
     <div class="form-group">
@@ -47,6 +55,7 @@
 
     </div>
 </div>
+
 <!-- /.box-body -->
 
 <div class="box-footer">

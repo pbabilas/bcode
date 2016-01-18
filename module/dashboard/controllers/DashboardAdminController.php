@@ -9,6 +9,8 @@ use Yii;
 
 class DashboardAdminController extends AbstractAdminController
 {
+	const MENU_NAME = 'Biurko';
+
 	/**
 	 * @return mixed
 	 */
