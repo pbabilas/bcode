@@ -13,8 +13,15 @@ use yii\web\UrlManager;
 class Manager extends UrlManager
 {
 
+	/** @var array */
+	private $ignoreModules = [ 'gii', 'debug' ];
+
 	public function createUrl($params)
 	{
+		if (in_array(\Yii::$app->controller->module->id, $this->ignoreModules))
+		{
+			return parent::createUrl($params);
+		}
 		if (is_array($params))
 		{
 			@list($module, $controllerId, $action) = explode('/', $params[0], 3);
@@ -38,6 +45,6 @@ class Manager extends UrlManager
 			return sprintf('%s%s', Settings::getInstance()->isAdmin() ? 'admin/' : '', $route);
 		}
 
-		return $params;
+		return parent::createUrl($params);
 	}
 }
