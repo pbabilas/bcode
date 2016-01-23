@@ -18,7 +18,10 @@ use \yii\web\IdentityInterface;
  * @property string $authKey
  * @property string $email
  * @property string $accessToken
- * @property mixed $picture_filename
+ * @property string $picture_filename
+ * @property string $first_name
+ * @property string $surname
+ * @property string $phone_number
  *
  */
 class User extends AbstractModel implements IdentityInterface, HasPictureInterface
@@ -40,10 +43,12 @@ class User extends AbstractModel implements IdentityInterface, HasPictureInterfa
     public function rules()
     {
         return [
-            [['name', 'password', 'email'], 'required'],
             [['name', 'authKey', 'accessToken', 'email'], 'string', 'max' => 100],
             [['password', 'picture_filename'], 'string', 'max' => 255],
-            [['name', 'picture_filename'], 'unique']
+            [['first_name', 'surname'], 'string', 'max' => 64],
+            [['phone_number'], 'string', 'max' => 32],
+            [['name'], 'unique'],
+            [['picture_filename'], 'unique']
         ];
     }
 
@@ -56,6 +61,9 @@ class User extends AbstractModel implements IdentityInterface, HasPictureInterfa
             'name' => '`user.name`',
             'password' => '`user.password`',
             'email' => '`user.email`',
+            'first_name' => '`user.first_name`',
+            'surname' => '`user.surname`',
+            'phone_number' => '`user.phone_number`',
         ];
     }
 

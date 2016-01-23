@@ -12,6 +12,18 @@
         {Html::input('text', 'User[name]', $user->name, ['class' => 'form-control', 'id' => 'user-name', 'max-length' => '100'])}
     </div>
     <div class="form-group">
+        <label for="page-title">`user.first_name`</label>
+        {Html::input('text', 'User[first_name]', $user->first_name, ['class' => 'form-control', 'id' => 'user-first_name', 'max-length' => '64'])}
+    </div>
+    <div class="form-group">
+        <label for="page-title">`user.surname`</label>
+        {Html::input('text', 'User[surname]', $user->surname, ['class' => 'form-control', 'id' => 'user-surname', 'max-length' => '64'])}
+    </div>
+    <div class="form-group">
+        <label for="page-title">`user.phone_number`</label>
+        {Html::input('number', 'User[phone_number]', $user->phone_number, ['class' => 'form-control', 'id' => 'user-phone_number' ])}
+    </div>
+    <div class="form-group">
         <label for="page-body">`user.email`</label>
         {Html::input('text', 'User[email]', $user->email, ['class' => 'form-control', 'id' => 'user-name', 'max-length' => '100'])}
     </div>

@@ -64,7 +64,6 @@ abstract class AbstractModule extends Module
 			return null;
 		}
 		if ($prefix !== '' && !preg_match('%^[a-z0-9_/]+$%i', $prefix)) {
-
 			return null;
 		}
 
@@ -72,7 +71,6 @@ abstract class AbstractModule extends Module
 
 		$className = str_replace(' ', '', ucwords(str_replace('-', ' ', $className))) . $controllerSuffix;
 		$className = ltrim($this->controllerNamespace . '\\' . str_replace('/', '\\', $prefix)  . $className, '\\');
-
 		if (strpos($className, '-') !== false || !class_exists($className)) {
 			return null;
 		}
@@ -83,5 +81,10 @@ abstract class AbstractModule extends Module
 		} else {
 			return null;
 		}
+	}
+
+	public function getHeaderContent()
+	{
+		return false;
 	}
 }

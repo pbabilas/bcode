@@ -40,4 +40,9 @@ class Settings
 		$this->isAdmin = true;
 	}
 
+	public function disableAdminMode()
+	{
+		$this->isAdmin = false;
+	}
+
 }

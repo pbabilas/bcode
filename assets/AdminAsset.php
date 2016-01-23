@@ -28,6 +28,7 @@ class AdminAsset extends AssetBundle
         'yii\jui\JuiAsset',
         'app\assets\BootstrapAsset',
         'app\assets\LTEAsset',
-        'app\assets\WysiwygAsset'
+        'app\assets\WysiwygAsset',
+        'app\assets\IoniconsAsset'
     ];
 }

@@ -10,8 +10,10 @@ namespace app\module\page\controllers;
 
 use app\class_map\dependency\SubclassOf;
 use app\class_map\generator\Generator;
+use app\module\page\models\Page;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
+use yii\web\NotFoundHttpException;
 
 class PageController extends Controller
 {
@@ -29,16 +31,21 @@ class PageController extends Controller
 
 	public function actionIndex()
 	{
-		$generator = new Generator();
-		$generator->setDependency(new SubclassOf('app\common\interfaces\SubscriberInterface'));
-		$generator->run(\Yii::$app->getBasePath().'/module');
-		$generator->saveTo(\Yii::$app->getBasePath().'/runtime/class_map.php');
 		die('done');
 	}
 
 	public function actionShow($id)
 	{
-		die('strona dziala');
+		$page = Page::findOne(['id' => $id]);
+
+		if (is_null($page))
+		{
+			throw new NotFoundHttpException;
+		}
+
+		return $this->render('index.tpl', [
+			'page' => $page
+		]);
 	}
 
 

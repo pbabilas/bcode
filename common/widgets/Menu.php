@@ -40,8 +40,6 @@ class Menu extends Widget
 	/** @var  User */
 	private $user;
 
-	public $disallowKeys = [ 'auth' ];
-
 	public function init()
 	{
 		$this->controllerName = Yii::$app->controller->id;
@@ -92,10 +90,6 @@ class Menu extends Widget
 						$li_2 = [];
 						foreach ($controllers as $controller)
 						{
-							if (in_array($controller, $this->disallowKeys))
-							{
-								continue;
-							}
 							$isActive = $this->moduleName == $module->name && $this->controllerName == $controller;
 							$icon = Html::tag('i', '', ['class' => 'fa fa-circle-o']);
 							$aContent2 = sprintf('%s `%s.%s`', $icon, $module->name, $controller);

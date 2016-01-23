@@ -20,7 +20,8 @@ class Installator extends AbstractInstallator
 		return [
 			1 => 'init',
 			2 => 'addUserPic',
-			3 => 'addUserRoles'
+			3 => 'addUserRoles',
+			4 => 'addUserPersonalData'
 		];
 	}
 
@@ -32,7 +33,8 @@ class Installator extends AbstractInstallator
 		return [
 			1 => 'dopTable',
 			2 => 'dropUserPic',
-			3 => 'dropUserRoles'
+			3 => 'dropUserRoles',
+			4 => 'dropUserPersonalData'
 		];
 	}
 
@@ -91,5 +93,27 @@ class Installator extends AbstractInstallator
 
 		$auth->remove($admin);
 		$auth->remove($other);
+	}
+
+	public function addUserPersonalData()
+	{
+		$addNameSql = 'ALTER TABLE `user` ADD COLUMN `first_name` VARCHAR (64) NULL';
+		$addSurnameSql = 'ALTER TABLE `user` ADD COLUMN `surname` VARCHAR (64) NULL';
+		$addPhoneSql = 'ALTER TABLE `user` ADD COLUMN `phone_number` VARCHAR (32) NULL';
+
+		$this->db->createCommand($addNameSql)->execute();
+		$this->db->createCommand($addSurnameSql)->execute();
+		$this->db->createCommand($addPhoneSql)->execute();
+	}
+
+	public function dropUserPersonalData()
+	{
+		$dropName = 'ALTER TABLE `user` DROP COLUMN `first_name`';
+		$dropSurname = 'ALTER TABLE `user` DROP COLUMN `surname`';
+		$dropPhone = 'ALTER TABLE `user` DROP COLUMN `phone_number`';
+
+		$this->db->createCommand($dropName)->execute();
+		$this->db->createCommand($dropSurname)->execute();
+		$this->db->createCommand($dropPhone)->execute();
 	}
 }

@@ -15,6 +15,9 @@ use yii\filters\VerbFilter;
  */
 class AuthAdminController extends AbstractAdminController
 {
+
+	const MENU_ITEM = false;
+
 	public function behaviors()
 	{
 		return [

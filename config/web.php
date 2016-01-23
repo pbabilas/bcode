@@ -43,6 +43,10 @@ $config = [
 			'class' => 'app\module\thumbnailer\Module',
 			'defaultRoute' => 'default/create',
 		],
+		'error' => [
+			'class' => 'app\module\error\Module',
+			'defaultRoute' => 'error/index',
+		]
 	],
     'components' => [
 		'bundles' => [
@@ -50,6 +54,9 @@ $config = [
 		],
 		'authManager' => [
 			'class' => 'yii\rbac\DbManager', // or use 'yii\rbac\DbManager'
+			'cache' => [
+				'class' => 'yii\caching\FileCache'
+			]
 		],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
@@ -65,7 +72,7 @@ $config = [
 			'authTimeout' => 3600,
         ],
         'errorHandler' => [
-            'errorAction' => 'error/show',
+            'errorAction' => 'error/error/index',
         ],
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
@@ -123,6 +130,10 @@ $config = [
 						'module' =>'general.php'
 					]
 				],
+				'dashboard' => [
+					'class' => 'yii\i18n\PhpMessageSource',
+					'basePath' => "@app/module/dashboard/lang"
+				]
 			],
 		],
 		'urlManager' => [

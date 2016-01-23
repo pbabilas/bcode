@@ -15,6 +15,12 @@ use yii\web\NotFoundHttpException;
 
 abstract class AbstractAdminController extends AbstractController
 {
+
+	/**
+	 * if controller not in menu overwrite to false
+	 */
+	const MENU_ITEM = true;
+
 	/** @var array  */
 	public $menuItems = [];
 	/** @var Module  */
@@ -24,6 +30,11 @@ abstract class AbstractAdminController extends AbstractController
 		'user' => [
 			'auth' => [
 				'login',
+				'index'
+			]
+		],
+		'error' => [
+			'error' => [
 				'index'
 			]
 		]
@@ -49,13 +60,12 @@ abstract class AbstractAdminController extends AbstractController
 		}
 
 		$this->checkModuleAccess();
-		$this->checkAdminAccess();
+//		$this->checkAdminAccess();
 
 		/** @var Module $menuItem */
 		foreach(ModuleQuery::findAllOrdered() as $menuItem)
 		{
-			$category = $menuItem->getCategory();
-			$this->menuItems[$category->name][] = $menuItem;
+			$this->menuItems[$menuItem->category_name][] = $menuItem;
 		}
 
 		\Yii::$app->layout = 'admin.tpl';

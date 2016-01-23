@@ -92,6 +92,9 @@ class UserAdminController extends AbstractAdminController
 
 			$user->name = $data['name'];
 			$user->email = $data['email'];
+			$user->first_name = $data['first_name'];
+			$user->surname = $data['surname'];
+			$user->phone_number = $data['phone_number'];
 
 			if ($data['password'] != '')
 			{

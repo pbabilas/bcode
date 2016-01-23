@@ -4,7 +4,8 @@ namespace app\module\dashboard\controllers;
 
 
 use app\common\AbstractAdminController;
-use app\module\user\models\User;
+use app\module\dashboard\models\Widget;
+use app\module\dashboard\widget\Finder;
 use Yii;
 
 class DashboardAdminController extends AbstractAdminController
@@ -16,21 +17,14 @@ class DashboardAdminController extends AbstractAdminController
 	 */
 	public function actionIndex()
 	{
-//		$auth = \Yii::$app->authManager;
-//		$admin = $auth->createRole('adminAccess');
-//		$auth->add($admin);
-//
-//		$auth = Yii::$app->authManager;
-//		$moduleRole = $auth->createRole('accessModule');
-//		$auth->add($moduleRole);
-//
-//		/** @var User $user */
-//		$user = User::findOne(['id' => 3]);
-//		$role = $auth->getRole('accessModule');
-//		$auth->assign($role, $user->getId());
-//
-//		die('done');
-       	return $this->render('admin/index.tpl');
+		$widgets = Widget::find()->all();
+
+		$finder = new Finder();
+
+       	return $this->render('admin/index.tpl', [
+			'widgets' => $widgets,
+			'finder' => $finder
+		]);
 	}
 
 }

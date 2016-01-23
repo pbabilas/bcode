@@ -1,7 +1,7 @@
 <?php
 
 return [
-	'name' => 'login',
+	'name' => 'Login',
 	'email' => 'Adres E-mail',
 	'password' => 'Hasło',
 	'technical' => 'Konto techniczne?',
@@ -16,5 +16,9 @@ return [
 	'login' => 'Nazwa konta',
 	'save' => 'Zapisz',
 	'picture' => 'Awatar',
-	'group' => 'Grupy'
+	'group' => 'Grupy',
+	'first_name' => 'Imię',
+	'surname' => 'Nazwisko',
+	'phone_number' => 'Numer telefonu',
+	'role' => 'Rola użytkownika'
 ];

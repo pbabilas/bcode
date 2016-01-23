@@ -13,8 +13,9 @@
 <html lang="{Yii::$app->language}">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{Html::encode($this->title)}</title>
-    <base href="http://bcode.lh">
+    <base href="{\Yii::$app->getRequest()->getHostInfo()}">
     {$this->head()}
     {Html::csrfMetaTags()}
 </head>

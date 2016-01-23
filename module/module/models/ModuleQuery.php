@@ -13,7 +13,7 @@ class ModuleQuery extends ActiveQuery
 {
 	public static function findAllOrdered()
 	{
-		$sql = "SELECT cm.* FROM core_module cm
+		$sql = "SELECT cm.*, cc.name__pl as category_name FROM core_module cm
 			JOIN core_category cc ON cc.id = cm.category_id
 			ORDER BY cc.`ordering`,  cm.ordering";
 

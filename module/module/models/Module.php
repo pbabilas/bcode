@@ -25,6 +25,9 @@ use Yii;
  */
 class Module extends AbstractMultiLangModel
 {
+
+	public $category_name;
+
 	/**
 	 * @inheritdoc
 	 */
@@ -164,7 +167,10 @@ class Module extends AbstractMultiLangModel
 
 			if($reflectionClass->isSubclassOf('app\common\AbstractController'))
 			{
-				$controllers[] = strtolower(str_replace('AdminController', '', $reflectionClass->getShortName()));
+				if ($reflectionClass->getConstant('MENU_ITEM'))
+				{
+					$controllers[] = strtolower(str_replace('AdminController', '', $reflectionClass->getShortName()));
+				}
 			}
 		}
 
