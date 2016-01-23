@@ -19,11 +19,14 @@ return [
         ],
         'log' => [
             'targets' => [
-                [
-                    'class' => 'yii\log\FileTarget',
+                'db' => [
+                    'class' => 'yii\log\DbTarget',
                     'levels' => ['error', 'warning'],
                 ],
             ],
+        ],
+        'authManager' => [
+            'class' => 'yii\rbac\DbManager', // or use 'yii\rbac\DbManager'
         ],
         'db' => $db,
     ],

@@ -8,32 +8,41 @@ namespace app\components\dispatcher;
 
 
 use app\common\interfaces\SubscriberInterface;
+use Yii;
 use yii\base\Component;
+use yii\base\Event;
 
 class EventDispatcher extends Component
 {
-
-	CONST SUBSCRIBERS_PATH = '/module/*/subscriber/*Subscriber.php';
-
 	public function init()
 	{
 		$subscribers = $this->getSubscribers();
 
-		/** @var SubscriberInterface $subscriber */
-		foreach ($subscribers as $subscriber)
+
+		foreach ($subscribers as $subscriberClassName)
 		{
+			/** @var SubscriberInterface $subscriber */
+			$subscriber = new $subscriberClassName();
 			$events = $subscriber->getSubscribedEvents();
 
 			foreach ($events as $event => $callback)
 			{
 				if (is_array($callback))
 				{
-					list( $callback, $layer ) = $callback;
+					list($callback, $layer) = $callback;
 				}
 
 				if (isset($layer))
 				{
-					\Yii::$app->$layer->on($event, [$subscriber, $callback]);
+					if (is_array($layer))
+					{
+						//in future We can declare Event as key of array if nessesary
+						Event::on($layer[0], $event, [$subscriber, $callback]);
+					}
+					else
+					{
+						\Yii::$app->$layer->on($event, [$subscriber, $callback]);
+					}
 				}
 				else
 				{
@@ -47,53 +56,14 @@ class EventDispatcher extends Component
 
 	/**
 	 * gets subscribers events to run
+	 *
 	 * @return array
 	 */
 	private function getSubscribers()
 	{
-		$subscribers = [];
-
-		foreach (glob($this->getSubscribersPath()) as $filePath)
-		{
-			$className = $this->buildSubscriberCLassNameFromString($filePath);
-
-			if (class_exists($className) == false)
-			{
-				continue;
-			}
-
-			$subscriber = new $className();
-
-			if ($subscriber instanceof SubscriberInterface)
-			{
-				$subscribers[] = $subscriber;
-			}
-		}
+		$classMapPath = Yii::$app->getBasePath() . '/runtime/class_map.php';
+		$subscribers = require_once( $classMapPath );
 
 		return $subscribers;
-	}
-
-	/**
-	 * build namespace class name for subscriber from class name
-	 * @param $string
-	 *
-	 * @return string
-	 */
-	private function buildSubscriberCLassNameFromString($string)
-	{
-		$parts = explode('/', $string);
-		$id = array_search('module', $parts);
-		$tmp = array_slice($parts, $id);
-		$namespace = join('\\', $tmp);
-		return basename('app\\'.$namespace, '.php');
-	}
-
-	/**
-	 * gets subscribers path for glob
-	 * @return string
-	 */
-	private function getSubscribersPAth()
-	{
-		return \Yii::$app->getBasePath() . EventDispatcher::SUBSCRIBERS_PATH;
 	}
 }

@@ -2,10 +2,10 @@
 
 namespace app\module\user;
 
-class Module extends \yii\base\Module
-{
+use app\common\AbstractModule;
 
-	public $controllerNamespace = 'app\module\user\controllers';
+class Module extends AbstractModule
+{
 
     public function init()
     {

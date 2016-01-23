@@ -4,6 +4,7 @@ namespace app\module\page\models;
 
 use app\common\model\AbstractMultiLangModel;
 use app\module\language\factory\LanguageFieldFactory;
+use app\module\nice_url\interfaces\NiceUrlInterface;
 use Yii;
 use yii\db\ActiveRecord;
 
@@ -15,7 +16,7 @@ use yii\db\ActiveRecord;
  * @property string $body
  * @property string $created_at
  */
-class Page extends AbstractMultiLangModel
+class Page extends AbstractMultiLangModel implements NiceUrlInterface
 {
     /**
      * @inheritdoc
@@ -24,6 +25,11 @@ class Page extends AbstractMultiLangModel
     {
         return 'page';
     }
+
+	public function init()
+	{
+		$this->fillEmptyMultilangFields();
+	}
 
     /**
      * @inheritdoc
@@ -90,5 +96,45 @@ class Page extends AbstractMultiLangModel
 			'body',
 			'title'
 		];
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getFieldForNiceUrl()
+	{
+		return 'title';
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getNiceUrlModuleName()
+	{
+		return 'page';
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getNiceUrlModuleAction()
+	{
+		return 'show';
+	}
+
+	/**
+	 * @return integer
+	 */
+	public function getId()
+	{
+		return $this->id;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getNiceUrlControllerId()
+	{
+		return 'page';
 	}
 }

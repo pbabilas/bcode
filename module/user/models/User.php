@@ -2,7 +2,9 @@
 
 namespace app\module\user\models;
 
-use app\module\nice_url\interfaces\NiceUrlInterface;
+use app\common\model\AbstractModel;
+use app\module\thumbnailer\Constants;
+use app\module\thumbnailer\interfaces\HasPictureInterface;
 use Yii;
 use \yii\db\ActiveRecord;
 use \yii\web\IdentityInterface;
@@ -16,10 +18,17 @@ use \yii\web\IdentityInterface;
  * @property string $authKey
  * @property string $email
  * @property string $accessToken
+ * @property string $picture_filename
+ * @property string $first_name
+ * @property string $surname
+ * @property string $phone_number
  *
  */
-class User extends ActiveRecord implements IdentityInterface, NiceUrlInterface
+class User extends AbstractModel implements IdentityInterface, HasPictureInterface
 {
+
+    const PICTURE_DIR = 'user/';
+
     /**
      * @inheritdoc
      */
@@ -34,10 +43,12 @@ class User extends ActiveRecord implements IdentityInterface, NiceUrlInterface
     public function rules()
     {
         return [
-            [['name', 'password', 'email'], 'required'],
             [['name', 'authKey', 'accessToken', 'email'], 'string', 'max' => 100],
-            [['password'], 'string', 'max' => 255],
-            [['name'], 'unique']
+            [['password', 'picture_filename'], 'string', 'max' => 255],
+            [['first_name', 'surname'], 'string', 'max' => 64],
+            [['phone_number'], 'string', 'max' => 32],
+            [['name'], 'unique'],
+            [['picture_filename'], 'unique']
         ];
     }
 
@@ -50,6 +61,9 @@ class User extends ActiveRecord implements IdentityInterface, NiceUrlInterface
             'name' => '`user.name`',
             'password' => '`user.password`',
             'email' => '`user.email`',
+            'first_name' => '`user.first_name`',
+            'surname' => '`user.surname`',
+            'phone_number' => '`user.phone_number`',
         ];
     }
 
@@ -59,6 +73,7 @@ class User extends ActiveRecord implements IdentityInterface, NiceUrlInterface
 	 */
     public static function findIdentity($id)
     {
+
         $user = User::find()
             ->where(['id' => $id])
             ->one();
@@ -113,15 +128,6 @@ class User extends ActiveRecord implements IdentityInterface, NiceUrlInterface
     }
 
     /**
-     * @param $password
-     * @return bool
-     */
-    public function validatePassword($password)
-    {
-        return $this->password === $password;
-    }
-
-    /**
      * @param mixed $token
      * @param null $type
      * @return array|null|ActiveRecord|IdentityInterface
@@ -135,28 +141,37 @@ class User extends ActiveRecord implements IdentityInterface, NiceUrlInterface
     }
 
     /**
-     * @return array
+     * @param string $filename
+     * @param string $size
+     *
+     * @return string
      */
-    public function getFieldsForNiceUrl()
+    public function getPicturePath($filename, $size = 'full_size')
     {
-        return [
-            'name'
-        ];
+        return sprintf(
+            '%s/web%s%s%s/%s',
+            \Yii::$app->getBasePath(),
+            Constants::PICTURES_PATH,
+            User::PICTURE_DIR,
+            $size,
+            $filename
+        );
     }
 
     /**
+     * @param string $filename
+     * @param string $size
+     *
      * @return string
      */
-    public function getNiceUrlModuleName()
+    public function getPictureUrl($filename, $size = 'full_size')
     {
-        return 'page';
-    }
-
-    /**
-     * @return string
-     */
-    public function getNiceUrlModuleAction()
-    {
-        return 'show';
+        return sprintf(
+            '%s%s%s/%s',
+            'pictures/',
+            User::PICTURE_DIR,
+            $size,
+            $filename
+        );
     }
 }

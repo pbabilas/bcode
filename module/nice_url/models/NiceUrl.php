@@ -9,17 +9,16 @@ use Yii;
 use yii\db\ActiveRecord;
 
 /**
- * This is the model class for table "nice_url".
- *
  * @property integer $id
  * @property string $object_class
  * @property integer $object_id
  * @property string $slug
  * @property string $url
  * @property integer $language_id
+ * @property bool $redirect
  *
  * @property Language $language
- */
+**/
 class NiceUrl extends \yii\db\ActiveRecord
 {
     /**
@@ -38,7 +37,8 @@ class NiceUrl extends \yii\db\ActiveRecord
         return [
             [['object_id', 'language_id'], 'required'],
             [['object_id', 'language_id'], 'integer'],
-            [['object_type', 'slug', 'url'], 'string', 'max' => 255],
+            [['object_class', 'slug', 'url'], 'string', 'max' => 255],
+			[['redirect'], 'boolean'],
             [['url'], 'unique']
         ];
     }
@@ -50,7 +50,7 @@ class NiceUrl extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'object_type' => 'Object Type',
+            'object_class' => 'Object Type',
             'object_id' => 'Object ID',
             'slug' => 'Slug',
             'url' => 'Url',
@@ -83,19 +83,36 @@ class NiceUrl extends \yii\db\ActiveRecord
     {
         $class = $this->object_class;
 
-        if (file_exists($class) === false)
+        if (class_exists($class) === false)
         {
-            throw new ObjectDoesNotExistsException();
+            throw new ObjectDoesNotExistsException('Class not exists exception.');
         }
 
 		/** @var NiceUrlInterface $object */
 		$object = $class::findOne($this->object_id);
 
-		if (is_null($object))
+		if (is_null($object) || $object instanceof NiceUrlInterface === false)
 		{
-			throw new ObjectDoesNotExistsException;
+			throw new ObjectDoesNotExistsException('No object found or wrong object.');
 		}
 
 		return $object;
     }
+
+	/**
+	 * @param NiceUrlInterface $object
+	 *
+	 * @return NiceUrl
+	 */
+	public static function createOneForObject(NiceUrlInterface $object)
+	{
+		$className = get_class($object);
+
+		$niceUrl = new NiceUrl();
+		$niceUrl->object_class = $className;
+		$niceUrl->object_id = $object->id;
+		$niceUrl->redirect = false;
+
+		return $niceUrl;
+	}
 }

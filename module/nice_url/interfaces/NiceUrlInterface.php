@@ -13,9 +13,9 @@ interface NiceUrlInterface
 {
 
 	/**
-	 * @return array
+	 * @return string
 	 */
-	public function getFieldsForNiceUrl();
+	public function getFieldForNiceUrl();
 
 	/**
 	 * @return string
@@ -25,5 +25,15 @@ interface NiceUrlInterface
 	/**
 	 * @return string
 	 */
+	public function getNiceUrlControllerId();
+
+	/**
+	 * @return string
+	 */
 	public function getNiceUrlModuleAction();
+
+	/**
+	 * @return integer
+	 */
+	public function getId();
 }

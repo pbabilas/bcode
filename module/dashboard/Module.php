@@ -2,13 +2,19 @@
 
 namespace app\module\dashboard;
 
-class Module extends \yii\base\Module
-{
+use app\common\AbstractModule;
+use Yii;
 
-	public $controllerNamespace = 'app\module\dashboard\controllers';
+class Module extends AbstractModule
+{
 
     public function init()
     {
         parent::init();
+    }
+
+    public function getHeaderContent()
+    {
+        return '@app/module/dashboard/views/dashboard/admin/header.tpl';
     }
 }

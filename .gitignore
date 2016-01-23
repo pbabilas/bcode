@@ -28,3 +28,9 @@ phpunit.phar
 
 #bootstrap note_modules
 /components/bootstrap/node_modules
+
+#config files
+/config/db.php
+
+#pictures
+/web/pictures/*/

@@ -29,7 +29,7 @@ class AbstractController extends Controller
 		{
 			foreach($fieldWithErrors as $error)
 			{
-				$this->addMessage('page', $error, Message::ALERT);;
+				$this->addMessage(null, $error, Message::ALERT);
 			}
 		}
 	}
@@ -39,10 +39,17 @@ class AbstractController extends Controller
 	 * @param string $module
 	 * @param string $message
 	 */
-	public function addMessage($module, $message, $type = null)
+	public function addMessage($module = null, $message, $type = null)
 	{
-		$message = new Message("`$module.$message`", $type);
-		Yii::$app->session->setFlash($message->getType(), $message->getContent());
+		if (is_null($module) == false)
+		{
+			$message = new Message("`$module.$message`", $type);
+		}
+		else
+		{
+			$message = new Message($message, $type);
+		}
+		Yii::$app->session->addFlash($message->getType(), $message->getContent());
 	}
 
 	/**

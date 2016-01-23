@@ -20,13 +20,18 @@
         "yiisoft/yii2-swiftmailer": "*",
         "yiisoft/yii2-smarty": "^2.0",
         "yiisoft/yii2-twig": "^2.0",
-        "symfony/var-dumper": "^2.7"
+        "symfony/var-dumper": "^2.7",
+        "thiagotalma/yii2-fullcalendar": "^2.0",
+        "almasaeed2010/adminlte": "~2.0",
+        "filsh/yii2-flags": "dev-master",
+        "yiisoft/yii2-imagine": "^2.0"
     },
     "require-dev": {
-        "yiisoft/yii2-codeception": "*",
         "yiisoft/yii2-debug": "*",
         "yiisoft/yii2-gii": "*",
-        "yiisoft/yii2-faker": "*"
+        "yiisoft/yii2-faker": "*",
+        "phpunit/phpunit": "^4.8",
+        "yiisoft/yii2-codeception": "^2.0"
     },
     "config": {
         "process-timeout": 1800

@@ -1,14 +1,9 @@
-.wrap
+.langs a
 {
-    padding-top: 70px;
+    opacity: 0.5;
 }
 
-.navbar-brand
+.langs a.current
 {
-    padding: 5px;
-}
-
-.navbar-brand img
-{
-    width: 60%;
+    opacity: 1;
 }
