@@ -10,7 +10,6 @@ use app\module\thumbnailer\picture\Uploader;
 use app\module\user\models\User;
 use app\module\user\models\UserSearch;
 use Yii;
-use yii\db\IntegrityException;
 use yii\web\NotFoundHttpException;
 use yii\web\UploadedFile;
 
@@ -47,12 +46,28 @@ class UserAdminController extends AbstractAdminController
 			$user->load(Yii::$app->request->post());
 			$user->setAccessToken();
 			$user->setAuthKey();
+			$rawPassword = Yii::$app->getSecurity()->generateRandomString(8);
 			$user->password = Yii::$app->getSecurity()->generatePasswordHash($user->password);
 
 			$this->handleUploadedPicture($user);
 
 			if ($user->save())
 			{
+				$result = $this->notifyUser(
+					'user.email_account_create_subject',
+					'babilas.pawel@gmail.com',
+					$user->email,
+					[
+						'user'     => $user,
+						'password' => $rawPassword,
+						'message'  => '`user.mail_new_account_message`'
+					]
+				);
+
+				if ($result == false)
+				{
+					$this->addMessage('user', 'mail_not_send');
+				}
 				return $this->redirect('/admin/user');
 			}
 
@@ -68,8 +83,8 @@ class UserAdminController extends AbstractAdminController
 		]);
 
 		return $this->render('admin/create.tpl', [
-			'user' => $user,
-			'roles' => Yii::$app->getAuthManager()->getRolesByUser($user->id),
+			'user'   => $user,
+			'roles'  => Yii::$app->getAuthManager()->getRolesByUser($user->id),
 			'finder' => new Finder()
 		]);
 	}
@@ -88,20 +103,7 @@ class UserAdminController extends AbstractAdminController
 		if (Yii::$app->request->isPost)
 		{
 			$transaction = Yii::$app->getDb()->beginTransaction();
-			$data = Yii::$app->request->post('User');
-
-			$user->name = $data['name'];
-			$user->email = $data['email'];
-			$user->first_name = $data['first_name'];
-			$user->surname = $data['surname'];
-			$user->phone_number = $data['phone_number'];
-
-			if ($data['password'] != '')
-			{
-				$user->setAccessToken();
-				$user->setAuthKey();
-				$user->password = Yii::$app->getSecurity()->generatePasswordHash($data['password']);
-			}
+			$user->load(Yii::$app->request->post());
 
 			$this->handleUploadedPicture($user);
 
@@ -124,8 +126,6 @@ class UserAdminController extends AbstractAdminController
 			$this->addErrorMessagesFromModel($user);
 		}
 
-		$user->password = '';
-
 		$this->view->title = '`user.update_user`';
 
 		$this->addBreadcrumb([
@@ -134,10 +134,48 @@ class UserAdminController extends AbstractAdminController
 		]);
 
 		return $this->render('admin/edit.tpl', [
-			'user' => $user,
-			'roles' => Yii::$app->getAuthManager()->getRolesByUser($user->id),
+			'user'   => $user,
+			'roles'  => Yii::$app->getAuthManager()->getRolesByUser($user->id),
 			'finder' => new Finder()
 		]);
+	}
+
+	public function actionReset($id)
+	{
+		/** @var User $user */
+		$user = User::findOne(['id' => $id]);
+
+		if (is_null($user))
+		{
+			throw new NotFoundHttpException;
+		}
+
+		$rawPassword = Yii::$app->getSecurity()->generateRandomString(8);
+		$user->setAccessToken();
+		$user->setAuthKey();
+		$user->password = Yii::$app->getSecurity()->generatePasswordHash($rawPassword);
+
+		if ($user->save())
+		{
+			$result = $this->notifyUser(
+				'user.email_reset_password_subject',
+				'babilas.pawel@gmail.com',
+				$user->email,
+				[
+					'user'     => $user,
+					'password' => $rawPassword,
+					'message'  => '`user.mail_reset_password_message`'
+				]
+			);
+
+			if ($result == false)
+			{
+				$this->addMessage('user', 'mail_not_send');
+			}
+			$this->addMessage('user', 'password_reset');
+		}
+
+		return $this->redirect('/admin/user');
 	}
 
 	public function actionDelete($id)
@@ -197,5 +235,27 @@ class UserAdminController extends AbstractAdminController
 				$user->picture_filename = $filename;
 			}
 		}
+	}
+
+	/**
+	 * @param string $subject
+	 * @param string $from
+	 * @param string $to
+	 * @param array $params
+	 *
+	 * @return bool
+	 *
+	 */
+	private function notifyUser($subject, $from, $to, array $params)
+	{
+		$mail = Yii::$app->getMailer()->compose();
+
+		$mail->setFrom($from)
+			->setSubject($subject)
+			->setTo($to)
+			->setHtmlBody(
+				$this->renderPartial('admin/notify_email.tpl', $params)
+			);
+		return $mail->send();
 	}
 }

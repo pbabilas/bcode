@@ -9,10 +9,11 @@
 namespace app\module\nice_url\tests\mock;
 
 
-use app\common\model\AbstractMultiLangModel;
 use app\module\nice_url\interfaces\NiceUrlInterface;
+use app\module\nice_url\models\NiceUrl;
+use app\module\page\models\Page;
 
-class NiceUrlObject extends AbstractMultiLangModel
+class NiceUrlObject extends NiceUrl
 	implements NiceUrlInterface
 {
 
@@ -95,4 +96,10 @@ class NiceUrlObject extends AbstractMultiLangModel
 	{
 		return 'test';
 	}
+
+	public function getObject()
+	{
+		return new Page();
+	}
+
 }

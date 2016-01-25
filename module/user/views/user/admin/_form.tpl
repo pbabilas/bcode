@@ -28,10 +28,6 @@
         {Html::input('text', 'User[email]', $user->email, ['class' => 'form-control', 'id' => 'user-name', 'max-length' => '100'])}
     </div>
     <div class="form-group">
-        <label for="page-body">`user.password`</label>
-        {Html::input('password', 'User[password]', $user->password, ['class' => 'form-control', 'id' => 'user-name', 'max-length' => '100'])}
-    </div>
-    <div class="form-group">
         <label for="user-role">`user.role`</label>
             {$roles = Group::findAll()}
             {$roleArray = Yii::$app->getAuthManager()->getRolesByUser($user->id)}

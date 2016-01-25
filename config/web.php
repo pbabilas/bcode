@@ -46,7 +46,12 @@ $config = [
 		'error' => [
 			'class' => 'app\module\error\Module',
 			'defaultRoute' => 'error/index',
+		],
+		'task' => [
+			'class' => 'app\module\task\Module',
+			'defaultRoute' => 'task/index',
 		]
+
 	],
     'components' => [
 		'bundles' => [
@@ -75,8 +80,7 @@ $config = [
             'errorAction' => 'error/error/index',
         ],
         'mailer' => [
-            'class' => 'yii\swiftmailer\Mailer',
-            'useFileTransport' => true,
+            'class' => 'yii\swiftmailer\Mailer'
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,

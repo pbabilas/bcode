@@ -6,7 +6,7 @@
  * Time: 17:51
  */
 
-namespace app\module\nice_url\tests;
+namespace app\module\nice_url\tests\generators;
 
 
 use app\module\nice_url\generators\SlugGenerator;

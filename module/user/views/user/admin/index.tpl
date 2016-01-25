@@ -33,6 +33,7 @@
                         <td>{$user->email}</td>
                         <td>
                             <a href="/admin/user/edit?id={$user->id}" class="glyphicon glyphicon-edit" aria-hidden="true" title="`page.edit`"></a>
+                            <a href="/admin/user/reset?id={$user->id}" class="glyphicon glyphicon-refresh" aria-hidden="true" title="`page.reset_password`"></a>
                             <a href="/admin/user/delete?id={$user->id}" class="glyphicon glyphicon-trash" aria-hidden="true" title="`page.delete_page`"></a>
                         </td>
                     </tr>

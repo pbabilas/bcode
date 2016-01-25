@@ -17,7 +17,7 @@ class Searcher
 	private $model;
 
 	/** @var int  */
-	private $limit = 10;
+	private $limit = 30;
 
 	/** @var \yii\db\ActiveQuery  */
 	private $query;

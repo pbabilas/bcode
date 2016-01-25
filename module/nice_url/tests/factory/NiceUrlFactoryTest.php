@@ -6,7 +6,7 @@
  * Time: 19:05
  */
 
-namespace app\module\nice_url\tests;
+namespace app\module\nice_url\tests\factory;
 
 
 use app\module\nice_url\factory\NiceUrlFactory;
